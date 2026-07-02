@@ -2,7 +2,7 @@
     "name": "anderdev/inlib",
     "autoload": {
         "psr-4": {
-            "Anderdev\\Inlib\\": "src/"
+              "App\\": "app/"
         }
     },
     "authors": [
@@ -12,6 +12,7 @@
     ],
     "require": {
         "twig/twig": "^3.27",
-        "dompdf/dompdf": "^3.1"
+        "dompdf/dompdf": "^3.1",
+        "pecee/simple-router": "^5.4"
     }
 }

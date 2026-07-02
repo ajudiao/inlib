@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Painel Administrativo - INLIB{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    {% block styles %}{% endblock %}
+  </head>
+  <body>
+    {% include 'components/admin/navbar.twig' %}
+
+    {% block content %}{% endblock %}
+
+    {% include 'components/admin/footer.twig' %}
+
+    <script src="{{ asset('js/data.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

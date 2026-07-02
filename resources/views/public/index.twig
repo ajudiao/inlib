@@ -1,0 +1,134 @@
+{% extends 'layouts/public.twig' %}
+
+{% block title %}INLIB - Biblioteca Digital{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Bem-vindo à INLIB</h1>
+        <p>Descubra uma vasta coleção de livros digitais de qualidade e acesse o conhecimento em qualquer lugar.</p>
+        <div class="hero-buttons">
+          <a href="{{ url('/livros') }}" class="btn btn-primary">Explorar Livros</a>
+          <a href="{{ url('/sobre') }}" class="btn btn-secondary">Saiba Mais</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Books -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Livros em Destaque</h2>
+        <p class="subtitle">Os melhores títulos para você começar a leitura</p>
+      </div>
+      <div id="featured-books" class="books-grid"></div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="{{ url('/livros') }}" class="btn btn-primary">Ver Todos os Livros</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Books -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Livros Recentes</h2>
+        <p class="subtitle">As adições mais recentes da nossa biblioteca</p>
+      </div>
+      <div id="recent-books" class="books-grid"></div>
+    </div>
+  </section>
+
+  <!-- Categories Preview -->
+  <section class="categories-preview">
+    <div class="container">
+      <div class="section-header">
+        <h2>Categorias</h2>
+        <p class="subtitle">Explore nossos temas disponíveis</p>
+      </div>
+      <div id="categories" class="categories-grid"></div>
+    </div>
+  </section>
+
+  <!-- Monographs Section -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Monografias Destacadas</h2>
+        <p class="subtitle">Trabalhos acadêmicos e pesquisas da universidade</p>
+      </div>
+      <div id="monographs" class="books-grid"></div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="{{ url('/livros') }}?category=Monografias" class="btn btn-primary">Ver Todas as Monografias</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Por Números</h2>
+        <p class="subtitle">Conheça nossa biblioteca</p>
+      </div>
+      <div class="stats-section">
+        <div class="stat-card">
+          <div class="stat-number" id="stat-books">12</div>
+          <div class="stat-label">Livros Catalogados</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-categories">8</div>
+          <div class="stat-label">Categorias</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-users">4</div>
+          <div class="stat-label">Usuários Ativos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-pdfs">12</div>
+          <div class="stat-label">PDFs Disponíveis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section container">
+    <h2>Pronto para começar?</h2>
+    <p>Crie uma conta e acesse toda nossa coleção de livros</p>
+    <a href="{{ url('/login') }}" class="btn btn-primary">Fazer Login</a>
+  </section>
+
+  {% endblock %}
+
+  {% block scripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Render featured books
+      const featured = getFeaturedBooks();
+      renderBookCards(featured, 'featured-books');
+
+      // Render recent books
+      const recent = getRecentBooks();
+      renderBookCards(recent, 'recent-books');
+
+      // Render categories
+      const cats = getCategories();
+      renderCategoryCards(cats, 'categories');
+
+      // Render monographs
+      const monographs = getBooks('Monografias');
+      renderBookCards(monographs, 'monographs');
+
+      // Update stats
+      const stats = getStats();
+      document.getElementById('stat-books').textContent = stats.totalBooks;
+      document.getElementById('stat-categories').textContent = stats.totalCategories;
+      document.getElementById('stat-users').textContent = stats.totalUsers;
+      document.getElementById('stat-pdfs').textContent = stats.totalPDFs;
+    });
+  </script>
+  {% endblock %}

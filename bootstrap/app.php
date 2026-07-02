@@ -1,19 +1,12 @@
 <?php
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+use Pecee\SimpleRouter\SimpleRouter;
 
-use Anderdev\Inlib\core\Router;
-use Anderdev\Inlib\controllers\HomeController;
-use Anderdev\Inlib\controllers\admin\AdminController;
+//SimpleRouter::setBasePath('/stand-cars/public');
 
-$router = new Router();
+// carregar rotas
+require ROUTES_PATH . '/web.php';
 
-$router->get('/', HomeController::class . '@index');
-$router->get('/sobre', HomeController::class . '@sobre');
-$router->get('/contato', HomeController::class . '@contato');
-$router->get('/livros', HomeController::class . '@livros');
+// iniciar router
+SimpleRouter::start();
 
-$router->get('/admin', AdminController::class . '@dashboard');
-$router->get('/admin/livros', AdminController::class . '@livros');
-
-return $router;

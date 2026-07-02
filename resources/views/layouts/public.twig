@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}INLIB - Biblioteca Digital{% endblock %}</title>
+    <meta name="description" content="Biblioteca digital moderna com acesso a livros, categorias e conteúdos acadêmicos.">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/header-footer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    {% block styles %}{% endblock %}
+  </head>
+  <body>
+    {% block navbar %}
+      {% include 'components/public/navbar.twig' %}
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}
+      {% include 'components/public/footer.twig' %}
+    {% endblock %}
+
+    <script src="{{ asset('js/data.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,295 @@
+{% extends 'layouts/public.twig' %}
+
+{% block title %}Login - INLIB{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+  <style>
+    .login-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    .login-left {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+      color: var(--white);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .login-left h1 {
+      font-size: 2.5rem;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .login-left p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .features-list {
+      list-style: none;
+      margin-top: 2rem;
+    }
+
+    .features-list li {
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .features-list li::before {
+      content: '✓';
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .login-right {
+      background-color: var(--white);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-form h2 {
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .login-form .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--gray-medium);
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .remember-forgot label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-weight: normal;
+    }
+
+    .remember-forgot a {
+      color: var(--primary-light);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--primary-light);
+      color: var(--white);
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+    }
+
+    .btn-login:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .divider {
+      text-align: center;
+      margin: 1.5rem 0;
+      color: var(--text-secondary);
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      display: inline-block;
+      width: 40%;
+      height: 1px;
+      background-color: var(--gray-medium);
+      vertical-align: middle;
+    }
+
+    .divider::before {
+      margin-right: 0.5rem;
+    }
+
+    .divider::after {
+      margin-left: 0.5rem;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--text-secondary);
+    }
+
+    .signup-link a {
+      color: var(--primary-light);
+      font-weight: 600;
+    }
+
+    @media (max-width: 968px) {
+      .login-container {
+        grid-template-columns: 1fr;
+      }
+
+      .login-left {
+        padding: 2rem;
+      }
+
+      .login-right {
+        padding: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .login-left {
+        padding: 1.5rem;
+      }
+
+      .login-right {
+        padding: 1.5rem;
+      }
+
+      .login-form {
+        max-width: 100%;
+      }
+
+      .login-left h1 {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+
+  <div class="login-container">
+    <!-- Left Section -->
+    <section class="login-left">
+      <div>
+        <h1>INLIB</h1>
+        <p>Biblioteca Digital para Todos</p>
+      </div>
+
+      <div>
+        <h3 style="margin-bottom: 1rem;">O que você encontra aqui:</h3>
+        <ul class="features-list">
+          <li>Acesso ilimitado a milhares de livros</li>
+          <li>Leitura online e download de PDFs</li>
+          <li>Categorias variadas para todos os gostos</li>
+          <li>Interface moderna e intuitiva</li>
+          <li>Sincronização entre dispositivos</li>
+        </ul>
+      </div>
+
+      <div>
+        <a href="index.html" style="color: var(--white); text-decoration: underline;">← Voltar ao Início</a>
+      </div>
+    </section>
+
+    <!-- Right Section -->
+    <section class="login-right">
+      <form class="login-form" id="login-form" onsubmit="handleLogin(event)">
+        <h2>Entrar</h2>
+        <p class="subtitle">Acesse sua conta para continuar</p>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" name="password" placeholder="Sua senha" required>
+        </div>
+
+        <div class="remember-forgot">
+          <label>
+            <input type="checkbox" name="remember"> Lembrar-me
+          </label>
+          <a href="#" onclick="alert('Funcionalidade para futuro desenvolvimento com PHP')">Esqueceu a senha?</a>
+        </div>
+
+        <button type="submit" class="btn-login">Entrar</button>
+
+        <div class="divider">ou</div>
+
+        <p class="signup-link">
+          Não tem conta? <a href="#" onclick="alert('Funcionalidade para futuro desenvolvimento com PHP')">Crie uma agora</a>
+        </p>
+      </form>
+    </section>
+  </div>
+
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const remember = document.querySelector('input[name="remember"]').checked;
+
+      if (validateEmail(email) && password.length >= 6) {
+        setStorage('user', { email, remember });
+        setStorage('loggedIn', true);
+        showNotification('Login realizado com sucesso!', 'success');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+      } else {
+        if (!validateEmail(email)) {
+          showNotification('Email inválido', 'error');
+        } else {
+          showNotification('Senha deve ter pelo menos 6 caracteres', 'error');
+        }
+      }
+    }
+  </script>
+{% endblock %}

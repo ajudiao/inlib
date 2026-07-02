@@ -1,0 +1,44 @@
+{% extends 'layouts/admin.twig' %}
+
+{% block title %}Usuários - INLIB Admin{% endblock %}
+
+{% block content %}
+      <div class="admin-header">
+        <h1>Gestão de Usuários</h1>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>Nome</th><th>Email</th><th>Tipo</th><th>Status</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="users-table"></tbody>
+        </table>
+      </div>
+
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function loadUsers() {
+      const users = getUsers();
+      const tbody = document.getElementById('users-table');
+      tbody.innerHTML = users.map(user => `
+        <tr>
+          <td><strong>${user.name}</strong></td>
+          <td>${user.email}</td>
+          <td>${user.type}</td>
+          <td><span style="background-color: ${user.status === 'Ativo' ? '#10b981' : '#ef4444'}; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">${user.status}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="table-action-btn action-edit" onclick="editUser(${user.id})">Editar</button>
+              <button class="table-action-btn action-delete" onclick="deleteUser(${user.id})">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+    function editUser(id) { showNotification('Editar usuário (simulado)', 'info'); }
+    function deleteUser(id) { confirmAction('Excluir este usuário?', () => { showNotification('Usuário excluído', 'success'); loadUsers(); }); }
+    function handleLogout() { if (confirm('Sair?')) { removeStorage('loggedIn'); window.location.href = '../../views/public/index.html'; } }
+    loadUsers();
+  </script>
+{% endblock %}

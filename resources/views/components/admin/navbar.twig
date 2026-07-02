@@ -1,0 +1,68 @@
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <div class="admin-logo-box">I</div>
+      <div class="admin-logo-text">
+        <div class="admin-logo-title">INLIB</div>
+        <div class="admin-logo-subtitle">Admin</div>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Principais</div>
+        <a href="{{ url('/admin') }}" class="active">
+          <span class="admin-nav-icon"><i class="fas fa-tachometer-alt"></i></span>
+          Dashboard
+        </a>
+      </div>
+
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Gestão</div>
+        <a href="{{ url('/admin/livros') }}">
+          <span class="admin-nav-icon"><i class="fas fa-book"></i></span>
+          Livros
+        </a>
+        <a href="{{ url('/admin/categorias') }}">
+          <span class="admin-nav-icon"><i class="fas fa-tags"></i></span>
+          Categorias
+        </a>
+        <a href="{{ url('/admin/usuarios') }}">
+          <span class="admin-nav-icon"><i class="fas fa-users"></i></span>
+          Usuários
+        </a>
+      </div>
+
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Ações</div>
+        <a href="{{ url('/admin/livros/adicionar') }}">
+          <span class="admin-nav-icon"><i class="fas fa-plus-circle"></i></span>
+          Novo Livro
+        </a>
+      </div>
+
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Sistema</div>
+        <a href="{{ url('/admin/configuracoes') }}">
+          <span class="admin-nav-icon"><i class="fas fa-cog"></i></span>
+          Configurações
+        </a>
+        <a href="{{ url('/') }}">
+          <span class="admin-nav-icon"><i class="fas fa-globe"></i></span>
+          Ver Site
+        </a>
+      </div>
+    </nav>
+
+    <div class="admin-user-section">
+      <div class="admin-user-avatar" id="admin-avatar">◯</div>
+      <div class="admin-user-info">
+        <div class="admin-user-name" id="admin-name">João Silva</div>
+        <div class="admin-user-role">Administrador</div>
+      </div>
+    </div>
+
+    <button class="admin-logout" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+  </aside>
+
+  <main class="admin-main">
