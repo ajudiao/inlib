@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Config\Database;
+use App\Core\Database;
 use PDO;
 
 /**
@@ -18,7 +18,7 @@ abstract class AbstractRepository
 
     public function __construct()
     {
-        $this->pdo = Database::getConnection();
+        $this->pdo = Database::connection();
     }
 
     /** Converte uma linha (array associativo) no Model correspondente */

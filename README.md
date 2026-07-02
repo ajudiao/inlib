@@ -4,6 +4,10 @@ Sistema web minimalista de gestão de biblioteca desenvolvido para o Instituto S
 
 O projeto foi construído com foco em simplicidade, organização e facilidade de evolução futura, seguindo boas práticas de arquitetura MVC.
 
+<p align="center">
+  <img src="public/assets/images/preview.png" alt="Pré-visualização do Sistema" width="100%">
+</p>
+
 ---
 
 ## Objetivo e Filosofia
