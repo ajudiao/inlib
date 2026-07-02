@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Livros - INLIB Admin</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-logo">
+        <div class="admin-logo-box">I</div>
+        <div class="admin-logo-text">
+          <div class="admin-logo-title">INLIB</div>
+          <div class="admin-logo-subtitle">Admin</div>
+        </div>
+      </div>
+      <nav class="admin-nav">
+        <div class="admin-nav-section">
+          <div class="admin-nav-section-title">Principais</div>
+          <a href="dashboard.html"><span class="admin-nav-icon">📊</span>Dashboard</a>
+        </div>
+        <div class="admin-nav-section">
+          <div class="admin-nav-section-title">Gestão</div>
+          <a href="livros.html" class="active"><span class="admin-nav-icon">📚</span>Livros</a>
+          <a href="categorias.html"><span class="admin-nav-icon">📁</span>Categorias</a>
+          <a href="usuarios.html"><span class="admin-nav-icon">👥</span>Usuários</a>
+        </div>
+        <div class="admin-nav-section">
+          <div class="admin-nav-section-title">Ações</div>
+          <a href="adicionar-livro.html"><span class="admin-nav-icon">➕</span>Novo Livro</a>
+        </div>
+        <div class="admin-nav-section">
+          <div class="admin-nav-section-title">Sistema</div>
+          <a href="configuracoes.html"><span class="admin-nav-icon">⚙️</span>Configurações</a>
+          <a href="../../views/public/index.html"><span class="admin-nav-icon">👁️</span>Ver Site</a>
+        </div>
+      </nav>
+      <div class="admin-user-section">
+        <div class="admin-user-avatar">👨</div>
+        <div class="admin-user-info">
+          <div class="admin-user-name">João Silva</div>
+          <div class="admin-user-role">Administrador</div>
+        </div>
+      </div>
+      <button class="admin-logout" onclick="handleLogout()">🚪 Sair</button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1>Gestão de Livros</h1>
+        <div class="admin-header-actions">
+          <a href="adicionar-livro.html" class="btn-admin btn-admin-primary">➕ Novo Livro</a>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Capa</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Categoria</th>
+                <th>Ano</th>
+                <th>Páginas</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="books-list-table">
+              <!-- Preenchido por JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function loadBooks() {
+      const books = getBooks();
+      const tableBody = document.getElementById('books-list-table');
+      
+      tableBody.innerHTML = books.map(book => `
+        <tr>
+          <td><img src="${book.cover}" alt="${book.title}" style="width: 40px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
+          <td><strong>${book.title}</strong></td>
+          <td>${book.author}</td>
+          <td>${book.category}</td>
+          <td>${book.year}</td>
+          <td>${book.pages}</td>
+          <td>
+            <div class="table-actions">
+              <button class="table-action-btn action-view" onclick="viewBook(${book.id})">Visualizar</button>
+              <button class="table-action-btn action-edit" onclick="window.location.href='editar-livro.html?id=${book.id}'">Editar</button>
+              <button class="table-action-btn action-delete" onclick="deleteBook(${book.id})">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function viewBook(bookId) {
+      window.location.href = `../../views/public/livro.html?id=${bookId}`;
+    }
+
+    function deleteBook(bookId) {
+      confirmAction('Tem certeza que deseja excluir este livro?', () => {
+        showNotification('Livro excluído com sucesso (simulado)', 'success');
+      });
+    }
+
+    function handleLogout() {
+      if (confirm('Tem certeza que deseja sair?')) {
+        removeStorage('loggedIn');
+        removeStorage('user');
+        window.location.href = '../../views/public/index.html';
+      }
+    }
+
+    loadBooks();
+  </script>
+</body>
+</html>

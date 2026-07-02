@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="INLIB - Biblioteca Digital Moderna. Acesse milhares de livros online.">
+  <title>INLIB - Biblioteca Digital</title>
+  
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/header-footer.css">
+  <link rel="stylesheet" href="../../assets/css/home.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-box">I</div>
+        <div>
+          <div class="logo-text">INLIB</div>
+          <div class="logo-subtitle">Instic Library</div>
+        </div>
+      </a>
+      
+      <div class="nav-wrapper">
+        <nav>
+          <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="livros.html">Livros</a></li>
+            <li><a href="categorias.html">Categorias</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="contato.html">Contato</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </nav>
+
+        <div class="search-box">
+          <input type="text" placeholder="Pesquisar livros...">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </div>
+
+        <button class="menu-toggle" onclick="toggleMenu()">≡</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Bem-vindo à INLIB</h1>
+        <p>Descubra uma vasta coleção de livros digitais de qualidade e acesse o conhecimento em qualquer lugar.</p>
+        <div class="hero-buttons">
+          <a href="livros.html" class="btn btn-primary">Explorar Livros</a>
+          <a href="sobre.html" class="btn btn-secondary">Saiba Mais</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Books -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Livros em Destaque</h2>
+        <p class="subtitle">Os melhores títulos para você começar a leitura</p>
+      </div>
+      <div id="featured-books" class="books-grid"></div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="livros.html" class="btn btn-primary">Ver Todos os Livros</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Books -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Livros Recentes</h2>
+        <p class="subtitle">As adições mais recentes da nossa biblioteca</p>
+      </div>
+      <div id="recent-books" class="books-grid"></div>
+    </div>
+  </section>
+
+  <!-- Categories Preview -->
+  <section class="categories-preview">
+    <div class="container">
+      <div class="section-header">
+        <h2>Categorias</h2>
+        <p class="subtitle">Explore nossos temas disponíveis</p>
+      </div>
+      <div id="categories" class="categories-grid"></div>
+    </div>
+  </section>
+
+  <!-- Monographs Section -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Monografias Destacadas</h2>
+        <p class="subtitle">Trabalhos acadêmicos e pesquisas da universidade</p>
+      </div>
+      <div id="monographs" class="books-grid"></div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="livros.html?category=Monografias" class="btn btn-primary">Ver Todas as Monografias</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Por Números</h2>
+        <p class="subtitle">Conheça nossa biblioteca</p>
+      </div>
+      <div class="stats-section">
+        <div class="stat-card">
+          <div class="stat-number" id="stat-books">12</div>
+          <div class="stat-label">Livros Catalogados</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-categories">8</div>
+          <div class="stat-label">Categorias</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-users">4</div>
+          <div class="stat-label">Usuários Ativos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-pdfs">12</div>
+          <div class="stat-label">PDFs Disponíveis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section container">
+    <h2>Pronto para começar?</h2>
+    <p>Crie uma conta e acesse toda nossa coleção de livros</p>
+    <a href="login.html" class="btn btn-primary">Fazer Login</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Sobre INLIB</h4>
+        <p>A INLIB é uma biblioteca digital moderna que oferece acesso a uma coleção curada de livros para leitura online.</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Links Rápidos</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="livros.html">Livros</a></li>
+          <li><a href="categorias.html">Categorias</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Contato</h4>
+        <p>Email: contato@inlib.com</p>
+        <p>Telefone: (11) 3000-0000</p>
+        <p>Endereço: São Paulo, Brasil</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Newsletter</h4>
+        <p>Inscreva-se para receber novidades</p>
+        <div class="footer-newsletter">
+          <input type="email" placeholder="seu@email.com">
+          <button onclick="showNotification('Obrigado por se inscrever!', 'success')">Inscrever</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-links">
+        <a href="#" title="Facebook">◎</a>
+        <a href="#" title="Twitter">◎</a>
+        <a href="#" title="Instagram">◎</a>
+        <a href="#" title="LinkedIn">◎</a>
+      </div>
+      <p>&copy; 2024 INLIB - Instic Library. Todos os direitos reservados.</p>
+      <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Serviço</a></p>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Render featured books
+      const featured = getFeaturedBooks();
+      renderBookCards(featured, 'featured-books');
+
+      // Render recent books
+      const recent = getRecentBooks();
+      renderBookCards(recent, 'recent-books');
+
+      // Render categories
+      const cats = getCategories();
+      renderCategoryCards(cats, 'categories');
+
+      // Render monographs
+      const monographs = getBooks('Monografias');
+      renderBookCards(monographs, 'monographs');
+
+      // Update stats
+      const stats = getStats();
+      document.getElementById('stat-books').textContent = stats.totalBooks;
+      document.getElementById('stat-categories').textContent = stats.totalCategories;
+      document.getElementById('stat-users').textContent = stats.totalUsers;
+      document.getElementById('stat-pdfs').textContent = stats.totalPDFs;
+    });
+  </script>
+</body>
+</html>

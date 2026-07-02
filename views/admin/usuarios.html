@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuários - INLIB Admin</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-logo"><div class="admin-logo-box">I</div><div class="admin-logo-text"><div class="admin-logo-title">INLIB</div><div class="admin-logo-subtitle">Admin</div></div></div>
+      <nav class="admin-nav">
+        <div class="admin-nav-section"><div class="admin-nav-section-title">Principais</div><a href="dashboard.html"><span class="admin-nav-icon">📊</span>Dashboard</a></div>
+        <div class="admin-nav-section"><div class="admin-nav-section-title">Gestão</div><a href="livros.html"><span class="admin-nav-icon">📚</span>Livros</a><a href="categorias.html"><span class="admin-nav-icon">📁</span>Categorias</a><a href="usuarios.html" class="active"><span class="admin-nav-icon">👥</span>Usuários</a></div>
+        <div class="admin-nav-section"><div class="admin-nav-section-title">Ações</div><a href="adicionar-livro.html"><span class="admin-nav-icon">➕</span>Novo Livro</a></div>
+        <div class="admin-nav-section"><div class="admin-nav-section-title">Sistema</div><a href="configuracoes.html"><span class="admin-nav-icon">⚙️</span>Configurações</a><a href="../../views/public/index.html"><span class="admin-nav-icon">👁️</span>Ver Site</a></div>
+      </nav>
+      <div class="admin-user-section"><div class="admin-user-avatar">👨</div><div class="admin-user-info"><div class="admin-user-name">João Silva</div><div class="admin-user-role">Administrador</div></div></div>
+      <button class="admin-logout" onclick="handleLogout()">🚪 Sair</button>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1>Gestão de Usuários</h1>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>Nome</th><th>Email</th><th>Tipo</th><th>Status</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="users-table"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function loadUsers() {
+      const users = getUsers();
+      const tbody = document.getElementById('users-table');
+      tbody.innerHTML = users.map(user => `
+        <tr>
+          <td><strong>${user.name}</strong></td>
+          <td>${user.email}</td>
+          <td>${user.type}</td>
+          <td><span style="background-color: ${user.status === 'Ativo' ? '#10b981' : '#ef4444'}; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">${user.status}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="table-action-btn action-edit" onclick="editUser(${user.id})">Editar</button>
+              <button class="table-action-btn action-delete" onclick="deleteUser(${user.id})">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+    function editUser(id) { showNotification('Editar usuário (simulado)', 'info'); }
+    function deleteUser(id) { confirmAction('Excluir este usuário?', () => { showNotification('Usuário excluído', 'success'); loadUsers(); }); }
+    function handleLogout() { if (confirm('Sair?')) { removeStorage('loggedIn'); window.location.href = '../../views/public/index.html'; } }
+    loadUsers();
+  </script>
+</body>
+</html>

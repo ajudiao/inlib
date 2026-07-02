@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Categorias de livros - INLIB Biblioteca Digital">
+  <title>Categorias - INLIB</title>
+  
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/header-footer.css">
+  <link rel="stylesheet" href="../../assets/css/home.css">
+  <style>
+    .page-header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+      color: var(--white);
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+      color: var(--white);
+    }
+
+    .categories-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .category-card-large {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      color: var(--white);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--box-shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 200px;
+      justify-content: space-between;
+    }
+
+    .category-card-large:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0, 102, 204, 0.3);
+    }
+
+    .category-icon-large {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .category-name-large {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .category-count-large {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .category-books {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--gray-light);
+    }
+
+    @media (max-width: 968px) {
+      .categories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+
+      .category-books {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-header {
+        padding: 2rem 0;
+      }
+
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-books {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-box">I</div>
+        <div>
+          <div class="logo-text">INLIB</div>
+          <div class="logo-subtitle">Instic Library</div>
+        </div>
+      </a>
+      
+      <div class="nav-wrapper">
+        <nav>
+          <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="livros.html">Livros</a></li>
+            <li><a href="categorias.html">Categorias</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="contato.html">Contato</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </nav>
+
+        <div class="search-box">
+          <input type="text" placeholder="Pesquisar livros...">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </div>
+
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Categorias</h1>
+      <p>Explore os temas disponíveis na nossa biblioteca</p>
+    </div>
+  </section>
+
+  <!-- All Categories -->
+  <section class="section">
+    <div class="categories-container">
+      <div id="categories-list"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Sobre INLIB</h4>
+        <p>A INLIB é uma biblioteca digital moderna que oferece acesso a uma coleção curada de livros para leitura online.</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Links Rápidos</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="livros.html">Livros</a></li>
+          <li><a href="categorias.html">Categorias</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Contato</h4>
+        <p>Email: contato@inlib.com</p>
+        <p>Telefone: (11) 3000-0000</p>
+        <p>Endereço: São Paulo, Brasil</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Newsletter</h4>
+        <p>Inscreva-se para receber novidades</p>
+        <div class="footer-newsletter">
+          <input type="email" placeholder="seu@email.com">
+          <button onclick="showNotification('Obrigado por se inscrever!', 'success')">Inscrever</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-links">
+        <a href="#" title="Facebook">f</a>
+        <a href="#" title="Twitter">𝕏</a>
+        <a href="#" title="Instagram">📷</a>
+        <a href="#" title="LinkedIn">in</a>
+      </div>
+      <p>&copy; 2024 INLIB - Instic Library. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function loadCategories() {
+      const categories = getCategories();
+      const container = document.getElementById('categories-list');
+
+      // Create grid of category cards
+      const categoriesHtml = categories.map(category => `
+        <div class="category-card-large" onclick="filterByCategory('${category.name}')">
+          <div class="category-icon-large">${category.icon}</div>
+          <div>
+            <div class="category-name-large">${category.name}</div>
+            <div class="category-count-large">${category.count} livros</div>
+          </div>
+        </div>
+      `).join('');
+
+      // Create detailed view for each category
+      const detailedHtml = categories.map(category => {
+        const categoryBooks = getBooks(category.name);
+        const bookCardsHtml = categoryBooks.map(book => `
+          <div class="book-card">
+            <img src="${book.cover}" alt="${book.title}" class="book-cover">
+            <div class="book-info">
+              <h3 class="book-title">${book.title}</h3>
+              <p class="book-author">por ${book.author}</p>
+              <div class="book-meta">
+                <span>${book.category}</span>
+                <span class="book-year">${book.year}</span>
+              </div>
+              <button class="btn-view-details" onclick="viewBook(${book.id})">Ver Detalhes</button>
+            </div>
+          </div>
+        `).join('');
+
+        return `
+          <section style="margin-top: 4rem; padding-top: 2rem; border-top: 3px solid var(--gray-light);">
+            <h2 style="color: var(--primary-dark); margin-bottom: 1.5rem; font-size: 1.8rem;">${category.icon} ${category.name}</h2>
+            <div class="category-books">
+              ${bookCardsHtml}
+            </div>
+          </section>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div style="margin-bottom: 3rem;">
+          <h2 style="color: var(--primary-dark); margin-bottom: 1.5rem;">Todas as Categorias</h2>
+          <div class="categories-grid">
+            ${categoriesHtml}
+          </div>
+        </div>
+        ${detailedHtml}
+      `;
+    }
+
+    loadCategories();
+  </script>
+</body>
+</html>

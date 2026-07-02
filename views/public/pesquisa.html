@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa - INLIB</title>
+  
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/header-footer.css">
+  <link rel="stylesheet" href="../../assets/css/home.css">
+  <style>
+    .search-hero {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+      color: var(--white);
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    .search-hero h1 {
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .search-results {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+
+    .results-info {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background-color: var(--gray-light);
+      border-radius: var(--border-radius);
+    }
+
+    .results-info h2 {
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .no-results h2 {
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+    }
+
+    .suggestion-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-box">I</div>
+        <div>
+          <div class="logo-text">INLIB</div>
+          <div class="logo-subtitle">Instic Library</div>
+        </div>
+      </a>
+      
+      <div class="nav-wrapper">
+        <nav>
+          <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="livros.html">Livros</a></li>
+            <li><a href="categorias.html">Categorias</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="contato.html">Contato</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </nav>
+
+        <div class="search-box">
+          <input type="text" placeholder="Pesquisar livros...">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </div>
+
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Hero -->
+  <section class="search-hero">
+    <div class="container">
+      <h1>Resultados da Pesquisa</h1>
+      <p id="search-term"></p>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="section">
+    <div class="search-results">
+      <div class="results-info">
+        <h2 id="results-count">Carregando...</h2>
+      </div>
+
+      <div id="search-results-container" class="books-grid"></div>
+
+      <div id="no-results" class="no-results" style="display: none;">
+        <h2>Nenhum livro encontrado</h2>
+        <p>Não encontramos livros que correspondam à sua pesquisa. Tente:</p>
+        <ul style="text-align: left; display: inline-block; margin-top: 1rem;">
+          <li>Verificar a ortografia</li>
+          <li>Usar palavras-chave mais gerais</li>
+          <li>Procurar por categoria</li>
+        </ul>
+        <div class="suggestion-links">
+          <a href="livros.html" class="btn btn-primary">Ver Todos os Livros</a>
+          <a href="categorias.html" class="btn btn-secondary">Explorar Categorias</a>
+          <a href="index.html" class="btn btn-secondary">Voltar ao Início</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Sobre INLIB</h4>
+        <p>A INLIB é uma biblioteca digital moderna que oferece acesso a uma coleção curada de livros para leitura online.</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Links Rápidos</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="livros.html">Livros</a></li>
+          <li><a href="categorias.html">Categorias</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Contato</h4>
+        <p>Email: contato@inlib.com</p>
+        <p>Telefone: (11) 3000-0000</p>
+        <p>Endereço: São Paulo, Brasil</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Newsletter</h4>
+        <p>Inscreva-se para receber novidades</p>
+        <div class="footer-newsletter">
+          <input type="email" placeholder="seu@email.com">
+          <button onclick="showNotification('Obrigado por se inscrever!', 'success')">Inscrever</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-links">
+        <a href="#" title="Facebook">f</a>
+        <a href="#" title="Twitter">𝕏</a>
+        <a href="#" title="Instagram">📷</a>
+        <a href="#" title="LinkedIn">in</a>
+      </div>
+      <p>&copy; 2024 INLIB - Instic Library. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function performSearch() {
+      const query = getUrlParameter('q');
+      if (!query) {
+        window.location.href = 'livros.html';
+        return;
+      }
+
+      document.getElementById('search-term').textContent = `Resultados para: "${query}"`;
+      document.title = `Pesquisa: ${query} - INLIB`;
+
+      const results = searchBooks(query);
+      const container = document.getElementById('search-results-container');
+      const noResults = document.getElementById('no-results');
+      const resultCount = document.getElementById('results-count');
+
+      if (results.length === 0) {
+        container.style.display = 'none';
+        noResults.style.display = 'block';
+        resultCount.textContent = 'Nenhum resultado encontrado';
+      } else {
+        container.style.display = 'grid';
+        noResults.style.display = 'none';
+        resultCount.innerHTML = `<strong>${results.length}</strong> livro${results.length !== 1 ? 's' : ''} encontrado${results.length !== 1 ? 's' : ''}`;
+        renderBookCards(results, 'search-results-container');
+      }
+    }
+
+    performSearch();
+  </script>
+</body>
+</html>
