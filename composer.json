@@ -1,0 +1,14 @@
+{
+    "name": "anderdev/inlib",
+    "autoload": {
+        "psr-4": {
+            "Anderdev\\Inlib\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "AndreJudiao"
+        }
+    ],
+    "require": {}
+}
