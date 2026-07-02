@@ -10,5 +10,8 @@
             "name": "AndreJudiao"
         }
     ],
-    "require": {}
+    "require": {
+        "twig/twig": "^3.27",
+        "dompdf/dompdf": "^3.1"
+    }
 }
