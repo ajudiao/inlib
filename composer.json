@@ -2,7 +2,9 @@
     "name": "anderdev/inlib",
     "autoload": {
         "psr-4": {
-              "App\\": "app/"
+              "App\\": "app/",
+              "App\\Repository\\": "app/Repositories/",
+              "App\\Model\\": "app/Models/"
         }
     },
     "authors": [

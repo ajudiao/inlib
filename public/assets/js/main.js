@@ -176,12 +176,12 @@ function renderCategoryCards(categories, containerId) {
 
 // View book details
 function viewBook(bookId) {
-  window.location.href = `/views/public/livro.html?id=${bookId}`;
+  window.location.href = `/ver_livro/${bookId}`;
 }
 
 // Filter by category
 function filterByCategory(categoryName) {
-  window.location.href = `/views/public/livros.html?category=${encodeURIComponent(categoryName)}`;
+  window.location.href = `/livros?category=${encodeURIComponent(categoryName)}`;
 }
 
 // Validate email

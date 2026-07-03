@@ -44,27 +44,32 @@ class UsuarioRepository extends AbstractRepository
     /** Cria o usuário e devolve o id gerado. Lança PDOException se o email já existir. */
     public function criar(Usuario $usuario): int
     {
-        $sql = "INSERT INTO usuarios (email, senha_hash, perfil, ativo)
-                VALUES (:email, :senha_hash, :perfil, :ativo)";
+        $sql = "INSERT INTO usuarios (nome, email, senha_hash, perfil, ativo, criado_em, atualizado_em)
+                VALUES (:nome, :email, :senha_hash, :perfil, :ativo, :criado_em, :atualizado_em)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'email'      => $usuario->email,
-            'senha_hash' => $usuario->senhaHash,
-            'perfil'     => $usuario->perfil,
-            'ativo'      => $usuario->ativo ? 1 : 0,
+            'nome'          => $usuario->nome,
+            'email'         => $usuario->email,
+            'senha_hash'    => $usuario->senhaHash,
+            'perfil'        => $usuario->perfil,
+            'ativo'         => $usuario->ativo ? 1 : 0,
+            'criado_em'     => $usuario->criadoEm ?? date('Y-m-d H:i:s'),
+            'atualizado_em' => $usuario->atualizadoEm ?? date('Y-m-d H:i:s'),
         ]);
         return (int) $this->pdo->lastInsertId();
     }
 
     public function atualizar(Usuario $usuario): bool
     {
-        $sql = "UPDATE usuarios SET email = :email, perfil = :perfil, ativo = :ativo WHERE id = :id";
+        $sql = "UPDATE usuarios SET nome = :nome, email = :email, perfil = :perfil, ativo = :ativo, atualizado_em = :atualizado_em WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
-            'id'     => $usuario->id,
-            'email'  => $usuario->email,
-            'perfil' => $usuario->perfil,
-            'ativo'  => $usuario->ativo ? 1 : 0,
+            'id'             => $usuario->id,
+            'nome'           => $usuario->nome,
+            'email'          => $usuario->email,
+            'perfil'         => $usuario->perfil,
+            'ativo'          => $usuario->ativo ? 1 : 0,
+            'atualizado_em'  => $usuario->atualizadoEm ?? date('Y-m-d H:i:s'),
         ]);
     }
 

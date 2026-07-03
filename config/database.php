@@ -2,7 +2,8 @@
 return [
     'host' => 'localhost',
     'dbname' => 'inlib_bd',
-    'user' => 'root',
+    'username' => 'root',
     'password' => '',
+    'port' => 3306,
     'charset' => 'utf8mb4',
 ];

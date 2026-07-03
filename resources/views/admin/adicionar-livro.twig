@@ -8,140 +8,120 @@
       </div>
 
       <div class="form-container">
-        <form id="book-form" onsubmit="handleBookForm(event)">
+        {% if formError is defined %}
+          <div class="alert alert-error">{{ formError }}</div>
+        {% endif %}
+        {% if formSuccess is defined %}
+          <div class="alert alert-success">{{ formSuccess }}</div>
+        {% endif %}
+
+        <form id="book-form" action="{{ url('/admin/livros/adicionar-livro') }}" method="POST" enctype="multipart/form-data">
           <div class="form-section">
-            <h3 class="form-section-title">Informações Básicas</h3>
+            <h3 class="form-section-title">Dados do Livro</h3>
             <div class="form-grid">
               <div class="form-group">
-                <label for="title">Título *</label>
-                <input type="text" id="title" name="title" required>
+                <label for="titulo">Título *</label>
+                <input type="text" id="titulo" name="titulo" value="{{ formOld.titulo|default('') }}" required>
               </div>
               <div class="form-group">
-                <label for="author">Autor *</label>
-                <input type="text" id="author" name="author" required>
+                <label for="capa">Capa do Livro *</label>
+                <input type="file" id="capa" name="capa" accept="image/jpeg,image/png,image/webp" required>
+                <small>Imagem JPG/PNG/WebP até 5MB.</small>
+              </div>
+              <div class="form-group">
+                <label for="url_livro">Arquivo PDF do Livro *</label>
+                <input type="file" id="url_livro" name="url_livro" accept="application/pdf" required>
+                <small>PDF até 50MB.</small>
+              </div>
+              <div class="form-group">
+                <label for="autor">Autor *</label>
+                <input type="text" id="autor" name="autor" value="{{ formOld.autor|default('') }}" required>
+              </div>
+              <div class="form-group">
+                <label for="editora">Editora *</label>
+                <input type="text" id="editora" name="editora" value="{{ formOld.editora|default('') }}" required>
               </div>
             </div>
           </div>
 
           <div class="form-section">
-            <h3 class="form-section-title">Informações Detalhadas</h3>
+            <h3 class="form-section-title">Identificação e Categoria</h3>
             <div class="form-grid">
               <div class="form-group">
-                <label for="publisher">Editora *</label>
-                <input type="text" id="publisher" name="publisher" required>
+                <label for="isbn">ISBN</label>
+                <input type="text" id="isbn" name="isbn" value="{{ formOld.isbn|default('') }}" placeholder="978-...">
               </div>
               <div class="form-group">
-                <label for="category">Categoria *</label>
-                <select id="category" name="category" required>
+                <label for="categoria_id">Categoria *</label>
+                <select id="categoria_id" name="categoria_id" required>
                   <option value="">Selecione uma categoria</option>
+                  {% for category in categories %}
+                    <option value="{{ category.id }}" {% if formOld.categoria_id is defined and formOld.categoria_id == category.id %}selected{% endif %}>{{ category.nome }}</option>
+                  {% endfor %}
                 </select>
               </div>
               <div class="form-group">
-                <label for="year">Ano de Publicação *</label>
-                <input type="number" id="year" name="year" min="1900" max="2099" required>
+                <label for="ano_publicacao">Ano de Publicação *</label>
+                <input type="number" id="ano_publicacao" name="ano_publicacao" min="1400" max="2099" value="{{ formOld.ano_publicacao|default('') }}" required>
               </div>
               <div class="form-group">
-                <label for="pages">Número de Páginas *</label>
-                <input type="number" id="pages" name="pages" min="1" required>
+                <label for="edicao">Edição *</label>
+                <input type="text" id="edicao" name="edicao" value="{{ formOld.edicao|default('') }}" placeholder="1ª edição, 2ª edição" required>
               </div>
             </div>
           </div>
 
           <div class="form-section">
-            <h3 class="form-section-title">Metadados</h3>
+            <h3 class="form-section-title">Estoque e Status</h3>
             <div class="form-grid">
               <div class="form-group">
-                <label for="language">Idioma *</label>
-                <input type="text" id="language" name="language" placeholder="ex: Português" required>
+                <label for="quantidade_estoque">Quantidade em Estoque *</label>
+                <input type="number" id="quantidade_estoque" name="quantidade_estoque" min="0" value="{{ formOld.quantidade_estoque|default('0') }}" required>
+              </div>
+              <div class="form-group form-switch">
+                <label for="ativo">Ativo</label>
+                <input type="checkbox" id="ativo" name="ativo" {% if formOld.ativo is not defined or formOld.ativo %}checked{% endif %}>
               </div>
               <div class="form-group">
-                <label for="isbn">ISBN</label>
-                <input type="text" id="isbn" name="isbn" placeholder="ex: 978-8532530786">
+                <label for="criado_em">Criado Em</label>
+                <input type="text" id="criado_em" name="criado_em" value="{{ formOld.criado_em|default('') }}" placeholder="Será preenchido automaticamente" readonly>
+              </div>
+              <div class="form-group">
+                <label for="atualizado_em">Atualizado Em</label>
+                <input type="text" id="atualizado_em" name="atualizado_em" value="{{ formOld.atualizado_em|default('') }}" placeholder="Será preenchido automaticamente" readonly>
               </div>
             </div>
           </div>
 
           <div class="form-section">
-            <h3 class="form-section-title">Descrição</h3>
+            <h3 class="form-section-title">Sinopse</h3>
             <div class="form-group">
-              <label for="description">Descrição do Livro *</label>
-              <textarea id="description" name="description" required></textarea>
-            </div>
-          </div>
-
-          <div class="form-section">
-            <h3 class="form-section-title">Uploads</h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label for="cover">Capa do Livro</label>
-                <input type="file" id="cover" name="cover" accept="image/*">
-                <small>PNG, JPG (máx 5MB)</small>
-              </div>
-              <div class="form-group">
-                <label for="pdf">Arquivo PDF</label>
-                <input type="file" id="pdf" name="pdf" accept=".pdf">
-                <small>PDF (máx 50MB)</small>
-              </div>
+              <label for="sinopse">Sinopse *</label>
+              <textarea id="sinopse" name="sinopse" rows="6" required>{{ formOld.sinopse|default('') }}</textarea>
             </div>
           </div>
 
           <div class="form-actions">
             <button type="reset" class="btn-admin btn-admin-secondary">Limpar</button>
-            <a href="livros.html" class="btn-admin btn-admin-secondary">Cancelar</a>
+            <a href="{{ url('/admin/livros') }}" class="btn-admin btn-admin-secondary">Cancelar</a>
             <button type="submit" class="btn-admin btn-admin-primary">Adicionar Livro</button>
           </div>
         </form>
       </div>
 
-  <script src="../../assets/js/data.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>
-    function initForm() {
-      const categorySelect = document.getElementById('category');
-      const categories = getCategories();
-      
-      categories.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat.name;
-        option.textContent = cat.name;
-        categorySelect.appendChild(option);
-      });
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      const criadoInput = document.getElementById('criado_em');
+      const atualizadoInput = document.getElementById('atualizado_em');
 
-    function handleBookForm(event) {
-      event.preventDefault();
-      
-      if (!validateForm('book-form')) {
-        showNotification('Por favor, preencha todos os campos obrigatórios', 'error');
-        return;
+      if (criadoInput && !criadoInput.value) {
+        criadoInput.value = today;
       }
-
-      const formData = {
-        title: document.getElementById('title').value,
-        author: document.getElementById('author').value,
-        publisher: document.getElementById('publisher').value,
-        category: document.getElementById('category').value,
-        year: document.getElementById('year').value,
-        pages: document.getElementById('pages').value,
-        language: document.getElementById('language').value,
-        isbn: document.getElementById('isbn').value,
-        description: document.getElementById('description').value
-      };
-
-      showNotification('Livro adicionado com sucesso!', 'success');
-      setTimeout(() => {
-        window.location.href = 'livros.html';
-      }, 1500);
-    }
-
-    function handleLogout() {
-      if (confirm('Tem certeza que deseja sair?')) {
-        removeStorage('loggedIn');
-        removeStorage('user');
-        window.location.href = '../../views/public/index.html';
+      if (atualizadoInput && !atualizadoInput.value) {
+        atualizadoInput.value = today;
       }
-    }
-
-    initForm();
+    });
   </script>
 {% endblock %}

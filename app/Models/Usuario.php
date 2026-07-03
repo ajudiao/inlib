@@ -7,6 +7,7 @@ class Usuario
 {
     public function __construct(
         public ?int $id = null,
+        public string $nome = '',
         public string $email = '',
         public string $senhaHash = '',
         public string $perfil = '', // admin | bibliotecario | professor | aluno
@@ -20,6 +21,7 @@ class Usuario
     {
         return new self(
             id: isset($d['id']) ? (int) $d['id'] : null,
+            nome: $d['nome'] ?? '',
             email: $d['email'] ?? '',
             senhaHash: $d['senha_hash'] ?? '',
             perfil: $d['perfil'] ?? '',
@@ -32,11 +34,14 @@ class Usuario
     public function toArray(): array
     {
         return [
-            'id'         => $this->id,
-            'email'      => $this->email,
-            'senha_hash' => $this->senhaHash,
-            'perfil'     => $this->perfil,
-            'ativo'      => $this->ativo ? 1 : 0,
+            'id'           => $this->id,
+            'nome'         => $this->nome,
+            'email'        => $this->email,
+            'senha_hash'   => $this->senhaHash,
+            'perfil'       => $this->perfil,
+            'ativo'        => $this->ativo ? 1 : 0,
+            'criado_em'    => $this->criadoEm,
+            'atualizado_em' => $this->atualizadoEm,
         ];
     }
 }

@@ -235,11 +235,11 @@
     </div>
   </section>
 
-  <script src="../../assets/js/data.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>
+    const allBooks = {{ books|json_encode|raw }};
+    const categoriesData = {{ categories|json_encode|raw }};
     let currentPage = 1;
-    let allBooks = getBooks();
     let filteredBooks = [...allBooks];
     const itemsPerPage = 9;
     let currentFilters = {
@@ -251,13 +251,14 @@
     function initPage() {
       renderCategoryFilters();
       loadFromUrl();
+      filterBooks();
       renderCatalog();
       attachEventListeners();
     }
 
     function renderCategoryFilters() {
       const container = document.getElementById('categories-filter');
-      const categories = getCategories();
+      const categories = categoriesData;
       
       container.innerHTML = categories.map(cat => `
         <label>

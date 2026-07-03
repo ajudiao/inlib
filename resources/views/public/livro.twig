@@ -196,8 +196,8 @@
 
   <!-- Breadcrumb -->
   <div class="breadcrumb">
-    <a href="index.html">Início</a> > 
-    <a href="livros.html">Livros</a> > 
+    <a href="{{ url('/') }}">Início</a> > 
+    <a href="{{ url('/livros') }}">Livros</a> > 
     <span id="breadcrumb-title">Carregando...</span>
   </div>
 
@@ -268,14 +268,14 @@
     function loadBookDetails() {
       const bookId = parseInt(getUrlParameter('id'));
       if (!bookId) {
-        window.location.href = 'livros.html';
+        window.location.href = '{{ url('/livros') }}';
         return;
       }
 
       const book = getBook(bookId);
       if (!book) {
         alert('Livro não encontrado');
-        window.location.href = 'livros.html';
+        window.location.href = '{{ url('/livros') }}';
         return;
       }
 

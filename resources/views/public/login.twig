@@ -61,6 +61,56 @@
       align-items: center;
     }
 
+    .auth-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--gray-medium);
+      border-radius: var(--border-radius);
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .auth-tab.active {
+      background-color: var(--primary-light);
+      color: var(--white);
+      border-color: var(--primary-light);
+    }
+
+    .auth-box.hidden {
+      display: none;
+    }
+
+    .alert {
+      width: 100%;
+      max-width: 400px;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .alert-error {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+    }
+
     .login-form {
       width: 100%;
       max-width: 400px;
@@ -228,13 +278,28 @@
       </div>
 
       <div>
-        <a href="index.html" style="color: var(--white); text-decoration: underline;">← Voltar ao Início</a>
+        <a href="/" style="color: var(--white); text-decoration: underline;">← Voltar ao Início</a>
       </div>
     </section>
 
     <!-- Right Section -->
     <section class="login-right">
-      <form class="login-form" id="login-form" onsubmit="handleLogin(event)">
+      <div class="auth-tabs">
+        <button type="button" id="btn-login" class="auth-tab active" onclick="showLoginForm()">Entrar</button>
+        <button type="button" id="btn-register" class="auth-tab" onclick="showRegisterForm()">Criar Conta</button>
+      </div>
+
+      {% if loginError is defined %}
+        <div class="alert alert-error">{{ loginError }}</div>
+      {% endif %}
+      {% if registerError is defined %}
+        <div class="alert alert-error">{{ registerError }}</div>
+      {% endif %}
+      {% if registerSuccess is defined %}
+        <div class="alert alert-success">{{ registerSuccess }}</div>
+      {% endif %}
+
+      <form class="login-form auth-box{% if showRegister is defined and showRegister %} hidden{% endif %}" id="login-form" action="{{ url('/login') }}" method="POST" onsubmit="return validateLoginForm()">
         <h2>Entrar</h2>
         <p class="subtitle">Acesse sua conta para continuar</p>
 
@@ -256,40 +321,98 @@
         </div>
 
         <button type="submit" class="btn-login">Entrar</button>
+      </form>
 
-        <div class="divider">ou</div>
+      <form class="login-form auth-box{% if showRegister is not defined or not showRegister %} hidden{% endif %}" id="register-form" action="{{ url('/register') }}" method="POST" onsubmit="return validateRegisterForm()">
+        <h2>Criar Conta</h2>
+        <p class="subtitle">Informe seu nome, email e senha.</p>
 
-        <p class="signup-link">
-          Não tem conta? <a href="#" onclick="alert('Funcionalidade para futuro desenvolvimento com PHP')">Crie uma agora</a>
-        </p>
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input type="text" id="name" name="name" placeholder="Seu nome completo" required value="{{ registerOld.name|default('') }}">
+        </div>
+
+        <div class="form-group">
+          <label for="email-register">Email</label>
+          <input type="email" id="email-register" name="email" placeholder="seu@email.com" required value="{{ registerOld.email|default('') }}">
+        </div>
+
+        <div class="form-group">
+          <label for="password-register">Senha</label>
+          <input type="password" id="password-register" name="password" placeholder="Crie uma senha" required>
+        </div>
+
+        <input type="hidden" name="perfil" value="aluno">
+        <input type="hidden" name="ativo" value="1">
+
+        <button type="submit" class="btn-login">Criar Conta</button>
+        <p class="signup-link">Perfil será definido como <strong>aluno</strong> automaticamente.</p>
       </form>
     </section>
   </div>
 
-  <script src="../../assets/js/data.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>
-    function handleLogin(event) {
-      event.preventDefault();
+    function showLoginForm() {
+      document.getElementById('login-form').classList.remove('hidden');
+      document.getElementById('register-form').classList.add('hidden');
+      document.getElementById('btn-login').classList.add('active');
+      document.getElementById('btn-register').classList.remove('active');
+    }
 
+    function showRegisterForm() {
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('register-form').classList.remove('hidden');
+      document.getElementById('btn-login').classList.remove('active');
+      document.getElementById('btn-register').classList.add('active');
+    }
+
+    function validateLoginForm() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const remember = document.querySelector('input[name="remember"]').checked;
 
-      if (validateEmail(email) && password.length >= 6) {
-        setStorage('user', { email, remember });
-        setStorage('loggedIn', true);
-        showNotification('Login realizado com sucesso!', 'success');
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 1500);
-      } else {
-        if (!validateEmail(email)) {
-          showNotification('Email inválido', 'error');
-        } else {
-          showNotification('Senha deve ter pelo menos 6 caracteres', 'error');
-        }
+      if (!validateEmail(email)) {
+        showNotification('Email inválido', 'error');
+        return false;
       }
+
+      if (password.length < 6) {
+        showNotification('Senha deve ter pelo menos 6 caracteres', 'error');
+        return false;
+      }
+
+      return true;
     }
+
+    function validateRegisterForm() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email-register').value;
+      const password = document.getElementById('password-register').value;
+
+      if (name === '') {
+        showNotification('Nome é obrigatório', 'error');
+        return false;
+      }
+
+      if (!validateEmail(email)) {
+        showNotification('Email inválido', 'error');
+        return false;
+      }
+
+      if (password.length < 6) {
+        showNotification('Senha deve ter pelo menos 6 caracteres', 'error');
+        return false;
+      }
+
+      return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      {% if showRegister is defined and showRegister %}
+        showRegisterForm();
+      {% else %}
+        showLoginForm();
+      {% endif %}
+    });
   </script>
 {% endblock %}

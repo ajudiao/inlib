@@ -24,7 +24,24 @@
         <h2>Livros em Destaque</h2>
         <p class="subtitle">Os melhores títulos para você começar a leitura</p>
       </div>
-      <div id="featured-books" class="books-grid"></div>
+      <div class="books-grid">
+        {% if featuredBooks is empty %}
+          <p class="empty-message">Nenhum livro em destaque no momento.</p>
+        {% else %}
+          {% for book in featuredBooks %}
+            <article class="book-card">
+              <img src="{{ book.capa is not empty ? book.capa : 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80' }}" alt="Capa de {{ book.titulo }}" class="book-cover">
+              <div class="book-info">
+                <h3 class="book-title">{{ book.titulo }}</h3>
+                <p class="book-author">por {{ book.autor }}</p>
+                <p class="book-meta">{{ book.editora|default('Editora não informada') }} • {{ book.anoPublicacao|default('Ano não informado') }}</p>
+                <p class="book-description">{{ book.sinopse|default('Sinopse não disponível')|slice(0, 150) }}{% if book.sinopse|default('')|length > 150 %}…{% endif %}</p>
+                <a href="{{ url('/ver_livro/' ~ book.id) }}" class="btn btn-secondary">Ver Detalhes</a>
+              </div>
+            </article>
+          {% endfor %}
+        {% endif %}
+      </div>
       <div style="text-align: center; margin-top: 2rem;">
         <a href="{{ url('/livros') }}" class="btn btn-primary">Ver Todos os Livros</a>
       </div>
@@ -38,7 +55,24 @@
         <h2>Livros Recentes</h2>
         <p class="subtitle">As adições mais recentes da nossa biblioteca</p>
       </div>
-      <div id="recent-books" class="books-grid"></div>
+      <div class="books-grid">
+        {% if recentBooks is empty %}
+          <p class="empty-message">Nenhum livro recente disponível.</p>
+        {% else %}
+          {% for book in recentBooks %}
+            <article class="book-card">
+              <img src="{{ book.capa is not empty ? book.capa : 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80' }}" alt="Capa de {{ book.titulo }}" class="book-cover">
+              <div class="book-info">
+                <h3 class="book-title">{{ book.titulo }}</h3>
+                <p class="book-author">por {{ book.autor }}</p>
+                <p class="book-meta">{{ book.editora|default('Editora não informada') }} • {{ book.anoPublicacao|default('Ano não informado') }}</p>
+                <p class="book-description">{{ book.sinopse|default('Sinopse não disponível')|slice(0, 150) }}{% if book.sinopse|default('')|length > 150 %}…{% endif %}</p>
+                <a href="{{ url('/ver_livro/' ~ book.id) }}" class="btn btn-secondary">Ver Detalhes</a>
+              </div>
+            </article>
+          {% endfor %}
+        {% endif %}
+      </div>
     </div>
   </section>
 
@@ -49,7 +83,18 @@
         <h2>Categorias</h2>
         <p class="subtitle">Explore nossos temas disponíveis</p>
       </div>
-      <div id="categories" class="categories-grid"></div>
+      <div class="categories-grid">
+        {% for category in categoriesPreview %}
+          <a class="category-card" href="{{ url('/livros') }}?category={{ category.nome|url_encode }}">
+            <div class="category-name">{{ category.nome }}</div>
+            <div class="category-count">{{ category.livros_count }} livros</div>
+            <p class="category-description">{{ category.descricao|default('Descrição não disponível') }}</p>
+          </a>
+        {% endfor %}
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="{{ url('/categorias') }}" class="btn btn-primary">Ver Mais Categorias</a>
+      </div>
     </div>
   </section>
 
@@ -60,7 +105,24 @@
         <h2>Monografias Destacadas</h2>
         <p class="subtitle">Trabalhos acadêmicos e pesquisas da universidade</p>
       </div>
-      <div id="monographs" class="books-grid"></div>
+      <div class="books-grid">
+        {% if monographs is empty %}
+          <p class="empty-message">Nenhuma monografia encontrada.</p>
+        {% else %}
+          {% for book in monographs %}
+            <article class="book-card">
+              <img src="{{ book.capa is not empty ? book.capa : 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80' }}" alt="Capa de {{ book.titulo }}" class="book-cover">
+              <div class="book-info">
+                <h3 class="book-title">{{ book.titulo }}</h3>
+                <p class="book-author">por {{ book.autor }}</p>
+                <p class="book-meta">{{ book.editora|default('Editora não informada') }} • {{ book.anoPublicacao|default('Ano não informado') }}</p>
+                <p class="book-description">{{ book.sinopse|default('Sinopse não disponível')|slice(0, 150) }}{% if book.sinopse|default('')|length > 150 %}…{% endif %}</p>
+                <a href="{{ url('/ver_livro/' ~ book.id) }}" class="btn btn-secondary">Ver Detalhes</a>
+              </div>
+            </article>
+          {% endfor %}
+        {% endif %}
+      </div>
       <div style="text-align: center; margin-top: 2rem;">
         <a href="{{ url('/livros') }}?category=Monografias" class="btn btn-primary">Ver Todas as Monografias</a>
       </div>
@@ -76,19 +138,19 @@
       </div>
       <div class="stats-section">
         <div class="stat-card">
-          <div class="stat-number" id="stat-books">12</div>
+          <div class="stat-number">{{ totalBooks|default(0) }}</div>
           <div class="stat-label">Livros Catalogados</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="stat-categories">8</div>
+          <div class="stat-number">{{ totalCategories|default(0) }}</div>
           <div class="stat-label">Categorias</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="stat-users">4</div>
+          <div class="stat-number">4</div>
           <div class="stat-label">Usuários Ativos</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="stat-pdfs">12</div>
+          <div class="stat-number">12</div>
           <div class="stat-label">PDFs Disponíveis</div>
         </div>
       </div>
@@ -102,33 +164,4 @@
     <a href="{{ url('/login') }}" class="btn btn-primary">Fazer Login</a>
   </section>
 
-  {% endblock %}
-
-  {% block scripts %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Render featured books
-      const featured = getFeaturedBooks();
-      renderBookCards(featured, 'featured-books');
-
-      // Render recent books
-      const recent = getRecentBooks();
-      renderBookCards(recent, 'recent-books');
-
-      // Render categories
-      const cats = getCategories();
-      renderCategoryCards(cats, 'categories');
-
-      // Render monographs
-      const monographs = getBooks('Monografias');
-      renderBookCards(monographs, 'monographs');
-
-      // Update stats
-      const stats = getStats();
-      document.getElementById('stat-books').textContent = stats.totalBooks;
-      document.getElementById('stat-categories').textContent = stats.totalCategories;
-      document.getElementById('stat-users').textContent = stats.totalUsers;
-      document.getElementById('stat-pdfs').textContent = stats.totalPDFs;
-    });
-  </script>
-  {% endblock %}
+{% endblock %}

@@ -13,8 +13,13 @@ Router::group([
     Router::get('/sobre', 'HomeController@sobre');
     Router::get('/contato', 'HomeController@contato');
     Router::get('/login', 'HomeController@login');
+    Router::post('/login', 'HomeController@loginPost');
+    Router::post('/register', 'HomeController@registerPost');
+    Router::get('/logout', 'HomeController@logout');
     Router::get('/pesquisa', 'HomeController@pesquisa');
-    Router::get('/livro/{id}', 'HomeController@livro');
+    Router::get('/ver_livro/{id}', 'HomeController@verLivro');
+    Router::get('/ver_livros/{id}', 'HomeController@verLivro');
+    Router::get('/livro/{id}', 'HomeController@verLivro');
 });
 
 Router::group([
@@ -27,6 +32,8 @@ Router::group([
     Router::get('/usuarios', 'DashboardController@usuarios');
     Router::get('/configuracoes', 'DashboardController@configuracoes');
     Router::get('/livros/adicionar', 'DashboardController@adicionarLivro');
+    Router::get('/livros/adicionar-livro', 'DashboardController@adicionarLivro');
+    Router::post('/livros/adicionar-livro', 'DashboardController@salvarLivro');
     Router::get('/livros/editar/{id}', 'DashboardController@editarLivro');
 });
 

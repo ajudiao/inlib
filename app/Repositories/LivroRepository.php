@@ -46,6 +46,35 @@ class LivroRepository extends AbstractRepository
         return array_map($this->hydrate(...), $stmt->fetchAll());
     }
 
+    public function countAtivos(): int
+    {
+        return (int) $this->pdo->query("SELECT COUNT(*) FROM livros WHERE ativo = 1")->fetchColumn();
+    }
+
+    public function listarDestaques(int $limit = 6): array
+    {
+        $limit = max(1, (int) $limit);
+        $stmt = $this->pdo->query("SELECT * FROM livros WHERE ativo = 1 ORDER BY criado_em DESC LIMIT {$limit}");
+        return array_map($this->hydrate(...), $stmt->fetchAll());
+    }
+
+    public function listarRecentes(int $limit = 6): array
+    {
+        return $this->listarDestaques($limit);
+    }
+
+    public function listarPorCategoriaNome(string $nome): array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT l.* FROM livros l
+             INNER JOIN categorias c ON c.id = l.categoria_id
+             WHERE c.nome = :nome AND l.ativo = 1
+             ORDER BY l.criado_em DESC"
+        );
+        $stmt->execute(['nome' => $nome]);
+        return array_map($this->hydrate(...), $stmt->fetchAll());
+    }
+
     /** Pesquisa simples por título e/ou autor (usado na busca do catálogo) */
     public function buscarPorTituloOuAutor(string $termo): array
     {
@@ -60,10 +89,10 @@ class LivroRepository extends AbstractRepository
     {
         $sql = "INSERT INTO livros
                     (titulo, autor, editora, isbn, categoria_id, sinopse, ano_publicacao,
-                     edicao, quantidade_estoque, ativo)
+                     edicao, capa, url_livro, quantidade_estoque, ativo, criado_em, atualizado_em)
                 VALUES
                     (:titulo, :autor, :editora, :isbn, :categoria_id, :sinopse, :ano_publicacao,
-                     :edicao, :quantidade_estoque, :ativo)";
+                     :edicao, :capa, :url_livro, :quantidade_estoque, :ativo, :criado_em, :atualizado_em)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'titulo'             => $livro->titulo,
@@ -74,8 +103,12 @@ class LivroRepository extends AbstractRepository
             'sinopse'            => $livro->sinopse,
             'ano_publicacao'     => $livro->anoPublicacao,
             'edicao'             => $livro->edicao,
+            'capa'               => $livro->capa,
+            'url_livro'          => $livro->urlLivro,
             'quantidade_estoque' => $livro->quantidadeEstoque,
             'ativo'              => $livro->ativo ? 1 : 0,
+            'criado_em'          => $livro->criadoEm,
+            'atualizado_em'      => $livro->atualizadoEm,
         ]);
         return (int) $this->pdo->lastInsertId();
     }
@@ -85,7 +118,7 @@ class LivroRepository extends AbstractRepository
         $sql = "UPDATE livros SET
                     titulo = :titulo, autor = :autor, editora = :editora, isbn = :isbn,
                     categoria_id = :categoria_id, sinopse = :sinopse, ano_publicacao = :ano_publicacao,
-                    edicao = :edicao, quantidade_estoque = :quantidade_estoque, ativo = :ativo
+                    edicao = :edicao, capa = :capa, quantidade_estoque = :quantidade_estoque, ativo = :ativo
                 WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
@@ -98,6 +131,7 @@ class LivroRepository extends AbstractRepository
             'sinopse'            => $livro->sinopse,
             'ano_publicacao'     => $livro->anoPublicacao,
             'edicao'             => $livro->edicao,
+            'capa'               => $livro->capa,
             'quantidade_estoque' => $livro->quantidadeEstoque,
             'ativo'              => $livro->ativo ? 1 : 0,
         ]);
