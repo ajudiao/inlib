@@ -13,8 +13,8 @@ class AdminMiddleware implements IMiddleware
             session_start();
         }
 
-        if (!isset($_SESSION['admin_logged']) || $_SESSION['admin_logged'] !== true) {
-            header('Location: /admin/login');
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_perfil']) || !in_array($_SESSION['user_perfil'], ['admin', 'bibliotecario'], true)) {
+            header('Location: /login');
             exit;
         }
     }

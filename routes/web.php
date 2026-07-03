@@ -24,12 +24,16 @@ Router::group([
 
 Router::group([
     'prefix' => '/admin',
-    'namespace' => 'App\Controllers\Admin'
+    'namespace' => 'App\Controllers\Admin',
+    'middleware' => 'App\Middleware\AdminMiddleware'
 ], function () {
     Router::get('/', 'DashboardController@index');
     Router::get('/livros', 'DashboardController@livros');
     Router::get('/categorias', 'DashboardController@categorias');
+    Router::post('/categorias', 'DashboardController@salvarCategoria');
     Router::get('/usuarios', 'DashboardController@usuarios');
+    Router::get('/usuarios/adicionar-usuario', 'DashboardController@adicionarUsuario');
+    Router::post('/usuarios/adicionar-usuario', 'DashboardController@salvarUsuario');
     Router::get('/configuracoes', 'DashboardController@configuracoes');
     Router::get('/livros/adicionar', 'DashboardController@adicionarLivro');
     Router::get('/livros/adicionar-livro', 'DashboardController@adicionarLivro');

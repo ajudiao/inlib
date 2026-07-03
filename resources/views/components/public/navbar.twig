@@ -16,7 +16,14 @@
           <li><a href="{{ url('/categorias') }}">Categorias</a></li>
           <li><a href="{{ url('/sobre') }}">Sobre</a></li>
           <li><a href="{{ url('/contato') }}">Contato</a></li>
-          <li><a href="{{ url('/login') }}">Login</a></li>
+          {% if session.user_id is defined and session.user_id is not null %}
+            {% if session.user_perfil in ['admin', 'bibliotecario'] %}
+              <li><a href="{{ url('/admin') }}">Painel Admin</a></li>
+            {% endif %}
+            <li><a href="{{ url('/logout') }}">Sair</a></li>
+          {% else %}
+            <li><a href="{{ url('/login') }}">Login</a></li>
+          {% endif %}
         </ul>
       </nav>
 

@@ -51,6 +51,7 @@ class CategoriaRepository extends AbstractRepository
                 'id' => $categoria->id,
                 'nome' => $categoria->nome,
                 'descricao' => $categoria->descricao,
+                'criado_em' => $categoria->criadoEm,
                 'livros_count' => (int) $row['livros_count'],
             ];
         }, $stmt->fetchAll());
@@ -58,10 +59,11 @@ class CategoriaRepository extends AbstractRepository
 
     public function criar(Categoria $categoria): int
     {
-        $stmt = $this->pdo->prepare("INSERT INTO categorias (nome, descricao) VALUES (:nome, :descricao)");
+        $stmt = $this->pdo->prepare("INSERT INTO categorias (nome, descricao, criado_em) VALUES (:nome, :descricao, :criado_em)");
         $stmt->execute([
             'nome'      => $categoria->nome,
             'descricao' => $categoria->descricao,
+            'criado_em' => $categoria->criadoEm ?? date('Y-m-d H:i:s'),
         ]);
         return (int) $this->pdo->lastInsertId();
     }

@@ -167,14 +167,15 @@
   <main class="book-detail-container">
     <div>
       <img
-        src="{{ book.capa is not empty ? book.capa : 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80' }}"
+        src="{{ bookCover(book.capa) }}"
         alt="Capa de {{ book.titulo }}"
         class="book-cover-large"
+        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80'"
       >
 
       <div class="book-actions">
         <a href="{{ url('/livros') }}" class="btn-primary-alt">← Voltar para Livros</a>
-        <a href="{{ book.capa is not empty ? book.capa : 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80' }}" class="btn-secondary-alt" target="_blank" rel="noreferrer">Abrir Livro</a>
+        <a href="{{ book.urlLivro is not empty ? book.urlLivro : url('/ver_livro/' ~ book.id) }}" class="btn-secondary-alt" target="{{ book.urlLivro is not empty ? '_blank' : '_self' }}" rel="noreferrer">Abrir Livro</a>
       </div>
     </div>
 

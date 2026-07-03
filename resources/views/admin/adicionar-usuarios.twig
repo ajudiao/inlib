@@ -1,0 +1,54 @@
+{% extends 'layouts/admin.twig' %}
+
+{% block title %}Adicionar Usuário - INLIB Admin{% endblock %}
+
+{% block content %}
+  <div class="admin-header">
+    <h1>Adicionar Usuário</h1>
+  </div>
+
+  <div style="background: #fff; padding: 1.25rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); max-width: 900px;">
+    <p style="margin-top: 0; color: #666;">A senha inicial será definida pelo administrador e o usuário poderá alterá-la depois.</p>
+
+    <form method="post" action="{{ url('/admin/usuarios/adicionar-usuario') }}">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+          <label for="usuario-nome" style="display: block; margin-bottom: 0.35rem; font-weight: 600;">Nome</label>
+          <input id="usuario-nome" type="text" name="nome" required style="width: 100%; padding: 0.7rem; border: 1px solid #ccc; border-radius: 6px;">
+        </div>
+        <div>
+          <label for="usuario-email" style="display: block; margin-bottom: 0.35rem; font-weight: 600;">E-mail</label>
+          <input id="usuario-email" type="email" name="email" required style="width: 100%; padding: 0.7rem; border: 1px solid #ccc; border-radius: 6px;">
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+          <label for="usuario-senha" style="display: block; margin-bottom: 0.35rem; font-weight: 600;">Senha inicial</label>
+          <input id="usuario-senha" type="password" name="senha_inicial" required style="width: 100%; padding: 0.7rem; border: 1px solid #ccc; border-radius: 6px;">
+        </div>
+        <div>
+          <label for="usuario-perfil" style="display: block; margin-bottom: 0.35rem; font-weight: 600;">Perfil</label>
+          <select id="usuario-perfil" name="perfil" required style="width: 100%; padding: 0.7rem; border: 1px solid #ccc; border-radius: 6px;">
+            <option value="admin">Admin</option>
+            <option value="bibliotecario">Bibliotecário</option>
+            <option value="professor">Professor</option>
+            <option value="aluno" selected>Aluno</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+          <input type="checkbox" name="ativo" checked>
+          Usuário ativo
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button type="submit" class="btn-admin btn-admin-primary">Salvar usuário</button>
+        <a href="{{ url('/admin/usuarios') }}" class="btn-admin btn-admin-secondary">Voltar</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

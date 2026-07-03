@@ -3,78 +3,70 @@
 {% block title %}Livros - INLIB Admin{% endblock %}
 
 {% block content %}
-      <div class="admin-header">
-        <h1>Gestão de Livros</h1>
-        <div class="admin-header-actions">
-          <a href="/admin/livros/adicionar-livro" class="btn-admin btn-admin-primary">➕ Novo Livro</a>
-        </div>
-      </div>
+  <div class="admin-header">
+    <h1>Gestão de Livros</h1>
+    <div class="admin-header-actions">
+      <a href="{{ url('/admin/livros/adicionar-livro') }}" class="btn-admin btn-admin-primary">➕ Novo Livro</a>
+    </div>
+  </div>
 
-      <div class="table-container">
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Capa</th>
-                <th>Título</th>
-                <th>Autor</th>
-                <th>Categoria</th>
-                <th>Ano</th>
-                <th>Páginas</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="books-list-table">
-              <!-- Preenchido por JavaScript -->
-            </tbody>
-          </table>
-        </div>
-      </div>
+  {% if flash %}
+    <div style="margin-bottom: 1rem; padding: 0.9rem 1rem; border-radius: 6px; {% if flash.type == 'success' %}background: #d4edda; color: #155724; border: 1px solid #c3e6cb;{% else %}background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;{% endif %}">
+      {{ flash.message }}
+    </div>
+  {% endif %}
 
-  <script src="../../assets/js/data.js"></script>
-  <script src="../../assets/js/main.js"></script>
-  <script>
-    function loadBooks() {
-      const books = getBooks();
-      const tableBody = document.getElementById('books-list-table');
-      
-      tableBody.innerHTML = books.map(book => `
-        <tr>
-          <td><img src="${book.cover}" alt="${book.title}" style="width: 40px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
-          <td><strong>${book.title}</strong></td>
-          <td>${book.author}</td>
-          <td>${book.category}</td>
-          <td>${book.year}</td>
-          <td>${book.pages}</td>
-          <td>
-            <div class="table-actions">
-              <button class="table-action-btn action-view" onclick="viewBook(${book.id})">Visualizar</button>
-              <button class="table-action-btn action-edit" onclick="window.location.href='editar-livro.html?id=${book.id}'">Editar</button>
-              <button class="table-action-btn action-delete" onclick="deleteBook(${book.id})">Excluir</button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function viewBook(bookId) {
-      window.location.href = `../../views/public/livro.html?id=${bookId}`;
-    }
-
-    function deleteBook(bookId) {
-      confirmAction('Tem certeza que deseja excluir este livro?', () => {
-        showNotification('Livro excluído com sucesso (simulado)', 'success');
-      });
-    }
-
-    function handleLogout() {
-      if (confirm('Tem certeza que deseja sair?')) {
-        removeStorage('loggedIn');
-        removeStorage('user');
-        window.location.href = '../../views/public/index.html';
-      }
-    }
-
-    loadBooks();
-  </script>
+  <div class="table-container">
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Capa</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Categoria</th>
+            <th>Ano</th>
+            <th>Estoque</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for livro in livros %}
+            <tr>
+              <td>
+                {% if livro.capa %}
+                  <img src="{{ livro.capa }}" alt="{{ livro.titulo }}" style="width: 40px; height: 50px; object-fit: cover; border-radius: 4px;">
+                {% else %}
+                  <div style="width: 40px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: #e5eef8; color: #0056b3; font-size: 1.2rem;">📖</div>
+                {% endif %}
+              </td>
+              <td><strong>{{ livro.titulo }}</strong></td>
+              <td>{{ livro.autor }}</td>
+              <td>{{ livro.categoriaNome ?: 'Sem categoria' }}</td>
+              <td>{{ livro.anoPublicacao ?: '-' }}</td>
+              <td>{{ livro.quantidadeEstoque }}</td>
+              <td>
+                {% if livro.ativo %}
+                  <span style="background-color: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Ativo</span>
+                {% else %}
+                  <span style="background-color: #ef4444; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Inativo</span>
+                {% endif %}
+              </td>
+              <td>
+                <div class="table-actions">
+                  <a href="{{ url('/ver_livro/' ~ livro.id) }}" class="table-action-btn action-view">Visualizar</a>
+                  <a href="{{ url('/admin/livros/editar/' ~ livro.id) }}" class="table-action-btn action-edit">Editar</a>
+                </div>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 2rem;">Nenhum livro encontrado.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}

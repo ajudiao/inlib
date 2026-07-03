@@ -82,14 +82,6 @@
                 <label for="ativo">Ativo</label>
                 <input type="checkbox" id="ativo" name="ativo" {% if formOld.ativo is not defined or formOld.ativo %}checked{% endif %}>
               </div>
-              <div class="form-group">
-                <label for="criado_em">Criado Em</label>
-                <input type="text" id="criado_em" name="criado_em" value="{{ formOld.criado_em|default('') }}" placeholder="Será preenchido automaticamente" readonly>
-              </div>
-              <div class="form-group">
-                <label for="atualizado_em">Atualizado Em</label>
-                <input type="text" id="atualizado_em" name="atualizado_em" value="{{ formOld.atualizado_em|default('') }}" placeholder="Será preenchido automaticamente" readonly>
-              </div>
             </div>
           </div>
 

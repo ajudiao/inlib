@@ -106,6 +106,6 @@
       event.preventDefault();
       showNotification('Configurações salvas com sucesso!', 'success');
     }
-    function handleLogout() { if (confirm('Sair?')) { removeStorage('loggedIn'); window.location.href = '../../views/public/index.html'; } }
+    function handleLogout() { if (confirm('Sair?')) { removeStorage('loggedIn'); window.location.href = '/'; } }
   </script>
 {% endblock %}

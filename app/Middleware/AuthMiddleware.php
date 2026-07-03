@@ -13,8 +13,9 @@ class AuthMiddleware implements IMiddleware
             session_start();
         }
 
-        if (!isset($_SESSION['admin_logged'])) {
-            header('Location: /admin/login');
+        $allowedProfiles = ['admin', 'bibliotecario'];
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_perfil']) || !in_array($_SESSION['user_perfil'], $allowedProfiles, true)) {
+            header('Location: /login');
             exit;
         }
     }

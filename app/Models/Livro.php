@@ -21,6 +21,7 @@ class Livro
         public bool $ativo = true,
         public ?string $criadoEm = null,
         public ?string $atualizadoEm = null,
+        public ?string $categoriaNome = null,
     ) {
     }
 

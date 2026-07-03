@@ -80,9 +80,9 @@
           <li>Procurar por categoria</li>
         </ul>
         <div class="suggestion-links">
-          <a href="livros.html" class="btn btn-primary">Ver Todos os Livros</a>
-          <a href="categorias.html" class="btn btn-secondary">Explorar Categorias</a>
-          <a href="index.html" class="btn btn-secondary">Voltar ao Início</a>
+          <a href="{{ url('/livros') }}" class="btn btn-primary">Ver Todos os Livros</a>
+          <a href="{{ url('/categorias') }}" class="btn btn-secondary">Explorar Categorias</a>
+          <a href="{{ url('/') }}" class="btn btn-secondary">Voltar ao Início</a>
         </div>
       </div>
     </div>
@@ -94,7 +94,7 @@
     function performSearch() {
       const query = getUrlParameter('q');
       if (!query) {
-        window.location.href = 'livros.html';
+        window.location.href = '/livros';
         return;
       }
 

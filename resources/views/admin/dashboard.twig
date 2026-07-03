@@ -40,107 +40,90 @@
 {% endblock %}
 
 {% block content %}
-      <div class="admin-header">
-        <div>
-          <h1>Dashboard</h1>
-          <p style="margin: 0.5rem 0 0; color: var(--text-secondary); max-width: 640px;">Resumo rápido das métricas essenciais e atalhos diretos para as tarefas administrativas mais importantes.</p>
-        </div>
-        <div class="admin-header-actions">
-          <button class="btn-admin btn-admin-primary" onclick="window.location.href='{{ url('/admin/livros/adicionar-livro') }}'">
-            ✚ Novo Livro
-          </button>
+  <div class="admin-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p style="margin: 0.5rem 0 0; color: var(--text-secondary); max-width: 640px;">Resumo rápido das métricas essenciais com dados vindos diretamente do banco.</p>
+    </div>
+    <div class="admin-header-actions">
+      <a class="btn-admin btn-admin-primary" href="{{ url('/admin/livros/adicionar-livro') }}">✚ Novo Livro</a>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="stat-card-admin">
+      <div class="stat-card-admin-header">
+        <div class="stat-card-admin-label">Total de Livros</div>
+        <div class="stat-card-admin-icon">▢</div>
+      </div>
+      <div class="stat-card-admin-value">{{ totalLivros }}</div>
+      <div class="stat-card-admin-change">{{ livrosAtivos }} ativos</div>
+    </div>
+
+    <div class="stat-card-admin">
+      <div class="stat-card-admin-header">
+        <div class="stat-card-admin-label">Categorias</div>
+        <div class="stat-card-admin-icon">◇</div>
+      </div>
+      <div class="stat-card-admin-value">{{ totalCategorias }}</div>
+      <div class="stat-card-admin-change">Cadastradas</div>
+    </div>
+
+    <div class="stat-card-admin">
+      <div class="stat-card-admin-header">
+        <div class="stat-card-admin-label">Usuários Ativos</div>
+        <div class="stat-card-admin-icon">⟡</div>
+      </div>
+      <div class="stat-card-admin-value">{{ usuariosAtivos }}</div>
+      <div class="stat-card-admin-change">No sistema</div>
+    </div>
+
+    <div class="stat-card-admin">
+      <div class="stat-card-admin-header">
+        <div class="stat-card-admin-label">Status dos Livros</div>
+        <div class="stat-card-admin-icon">◈</div>
+      </div>
+      <div class="stat-card-admin-value">{{ livrosAtivos }}/{{ totalLivros }}</div>
+      <div class="stat-card-admin-change">Ativos / Total</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem;">
+    <h2 style="color: var(--primary-dark); margin-bottom: 1rem;">Visão Rápida</h2>
+    <div class="charts-grid">
+      <div class="chart-container">
+        <div class="chart-title">Livros por Categoria</div>
+        <div class="chart-wrapper">
+          <canvas id="categoryChart"></canvas>
         </div>
       </div>
 
-      <!-- Stats Grid -->
-      <div class="dashboard-grid">
-        <div class="stat-card-admin">
-          <div class="stat-card-admin-header">
-            <div class="stat-card-admin-label">Total de Livros</div>
-            <div class="stat-card-admin-icon">▢</div>
-          </div>
-          <div class="stat-card-admin-value" id="stat-total-books">12</div>
-          <div class="stat-card-admin-change">+3 este mês</div>
-        </div>
-
-        <div class="stat-card-admin">
-          <div class="stat-card-admin-header">
-            <div class="stat-card-admin-label">Categorias</div>
-            <div class="stat-card-admin-icon">◇</div>
-          </div>
-          <div class="stat-card-admin-value" id="stat-categories">9</div>
-          <div class="stat-card-admin-change">Organizadas</div>
-        </div>
-
-        <div class="stat-card-admin">
-          <div class="stat-card-admin-header">
-            <div class="stat-card-admin-label">Usuários Ativos</div>
-            <div class="stat-card-admin-icon">⟡</div>
-          </div>
-          <div class="stat-card-admin-value" id="stat-users">4</div>
-          <div class="stat-card-admin-change">+1 esta semana</div>
-        </div>
-
-        <div class="stat-card-admin">
-          <div class="stat-card-admin-header">
-            <div class="stat-card-admin-label">Empréstimos Ativos</div>
-            <div class="stat-card-admin-icon">◈</div>
-          </div>
-          <div class="stat-card-admin-value" id="stat-loans">127</div>
-          <div class="stat-card-admin-change">+15 esta semana</div>
+      <div class="chart-container">
+        <div class="chart-title">Status dos Livros</div>
+        <div class="chart-wrapper">
+          <canvas id="statusChart"></canvas>
         </div>
       </div>
+    </div>
+  </div>
+{% endblock %}
 
-      <!-- Core Insights -->
-      <div style="margin-top: 3rem;">
-        <h2 style="color: var(--primary-dark); margin-bottom: 1rem;">Visão Rápida</h2>
-        <div class="charts-grid">
-          <div class="chart-container">
-            <div class="chart-title">Livros por Categoria</div>
-            <div class="chart-wrapper">
-              <canvas id="categoryChart"></canvas>
-            </div>
-          </div>
-
-          <div class="chart-container">
-            <div class="chart-title">Empréstimos Ativos</div>
-            <div class="chart-wrapper">
-              <canvas id="loansChart"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-
-  {% endblock %}
-
-  {% block scripts %}
+{% block scripts %}
   <script>
-    let categoryChart, loansChart;
+    document.addEventListener('DOMContentLoaded', () => {
+      const categoryLabels = {{ categoriesSummary|map(item => item.nome)|json_encode|raw }};
+      const categoryData = {{ categoriesSummary|map(item => item.livros_count)|json_encode|raw }};
 
-    function initCharts() {
-      const books = getBooks();
-      const categories = getCategories();
-      
-      // Prepare data for category chart
-      const categoryLabels = categories.map(c => c.name);
-      const categoryData = categories.map(c => books.filter(b => b.category === c.name).length);
-      
-      const categoryColors = [
-        '#0066cc', '#00a6ff', '#006699', '#0099ff',
-        '#0055aa', '#0088dd', '#004488', '#0077bb', '#0066ff'
-      ];
-
-      // Category Chart
       const categoryCtx = document.getElementById('categoryChart');
       if (categoryCtx) {
-        categoryChart = new Chart(categoryCtx, {
+        new Chart(categoryCtx, {
           type: 'bar',
           data: {
             labels: categoryLabels,
             datasets: [{
               label: 'Quantidade de Livros',
               data: categoryData,
-              backgroundColor: categoryColors,
+              backgroundColor: ['#0066cc', '#00a6ff', '#006699', '#0099ff', '#0055aa', '#0088dd', '#004488', '#0077bb', '#0066ff'],
               borderRadius: 5,
               borderSkipped: false
             }]
@@ -149,29 +132,23 @@
             responsive: true,
             maintainAspectRatio: false,
             indexAxis: 'y',
-            plugins: {
-              legend: { display: false }
-            },
+            plugins: { legend: { display: false } },
             scales: {
-              x: {
-                beginAtZero: true,
-                max: Math.max(...categoryData) + 2
-              }
+              x: { beginAtZero: true, max: Math.max(...categoryData, 1) + 1 }
             }
           }
         });
       }
 
-      // Loans Chart (Pie)
-      const loansCtx = document.getElementById('loansChart');
-      if (loansCtx) {
-        loansChart = new Chart(loansCtx, {
+      const statusCtx = document.getElementById('statusChart');
+      if (statusCtx) {
+        new Chart(statusCtx, {
           type: 'doughnut',
           data: {
-            labels: ['Empréstimos Ativos', 'Disponíveis', 'Em Processamento'],
+            labels: ['Ativos', 'Inativos'],
             datasets: [{
-              data: [127, 245, 28],
-              backgroundColor: ['#0066cc', '#10b981', '#f59e0b'],
+              data: [{{ livrosAtivos }}, {{ livrosInativos }}],
+              backgroundColor: ['#10b981', '#f59e0b'],
               borderColor: '#fff',
               borderWidth: 2
             }]
@@ -179,49 +156,10 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-              legend: { position: 'bottom' }
-            }
+            plugins: { legend: { position: 'bottom' } }
           }
         });
       }
-
-    }
-
-    function initDashboard() {
-      const admin = getAdminUser();
-      const stats = getStats();
-
-      // Update admin info
-      document.getElementById('admin-name').textContent = admin.name;
-
-      // Update stats
-      document.getElementById('stat-total-books').textContent = stats.totalBooks;
-      document.getElementById('stat-categories').textContent = stats.totalCategories;
-      document.getElementById('stat-users').textContent = stats.totalUsers;
-      document.getElementById('stat-loans').textContent = stats.loans;
-
-      // Initialize charts
-      initCharts();
-    }
-
-    function handleLogout() {
-      if (confirm('Tem certeza que deseja sair?')) {
-        removeStorage('loggedIn');
-        removeStorage('user');
-        showNotification('Você foi desconectado', 'info');
-        setTimeout(() => {
-          window.location.href = '{{ url('/') }}';
-        }, 1000);
-      }
-    }
-
-    function deleteBook(bookId) {
-      confirmAction('Tem certeza que deseja excluir este livro?', () => {
-        showNotification('Livro excluído com sucesso (simulado)', 'success');
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', initDashboard);
+    });
   </script>
-  {% endblock %}
+{% endblock %}

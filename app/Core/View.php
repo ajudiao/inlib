@@ -26,8 +26,13 @@ class View
             | Variáveis globais
             |--------------------------------------------------------------------------
             */
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
             self::$twig->addGlobal('app_name', APP_NAME);
             self::$twig->addGlobal('base_url', URL_DESENVOLVIMENTO);
+            self::$twig->addGlobal('session', $_SESSION ?? []);
 
             /*
             |--------------------------------------------------------------------------
@@ -45,6 +50,45 @@ class View
             self::$twig->addFunction(
                 new TwigFunction('url', function ($path = '') {
                     return '/' . ltrim($path, '/');
+                })
+            );
+
+            self::$twig->addFunction(
+                new TwigFunction('bookCover', function (?string $path = null) {
+                    $fallback = '/assets/images/preview.png';
+
+                    if ($path === null || trim($path) === '') {
+                        return $fallback;
+                    }
+
+                    $path = trim($path);
+
+                    if (preg_match('#^https?://#i', $path) || strpos($path, 'data:') === 0) {
+                        return $path;
+                    }
+
+                    if (strpos($path, '/assets/') === 0) {
+                        return $path;
+                    }
+
+                    if (strpos($path, '/public/') === 0) {
+                        $path = substr($path, strlen('/public'));
+                    }
+
+                    if (strpos($path, '/') !== 0) {
+                        $path = '/' . $path;
+                    }
+
+                    $publicFile = BASE_PATH . '/public' . $path;
+                    if (file_exists($publicFile)) {
+                        return $path;
+                    }
+
+                    if (strpos($path, '/uploads/') === 0) {
+                        return $path;
+                    }
+
+                    return '/uploads/books/covers/' . ltrim($path, '/');
                 })
             );
 

@@ -30,7 +30,7 @@
         {% else %}
           {% for book in featuredBooks %}
             <article class="book-card">
-              <img src="{{ book.capa is not empty ? book.capa : 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80' }}" alt="Capa de {{ book.titulo }}" class="book-cover">
+              <img src="{{ bookCover(book.capa) }}" alt="Capa de {{ book.titulo }}" class="book-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80'">
               <div class="book-info">
                 <h3 class="book-title">{{ book.titulo }}</h3>
                 <p class="book-author">por {{ book.autor }}</p>
@@ -61,7 +61,7 @@
         {% else %}
           {% for book in recentBooks %}
             <article class="book-card">
-              <img src="{{ book.capa is not empty ? book.capa : 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80' }}" alt="Capa de {{ book.titulo }}" class="book-cover">
+              <img src="{{ bookCover(book.capa) }}" alt="Capa de {{ book.titulo }}" class="book-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80'">
               <div class="book-info">
                 <h3 class="book-title">{{ book.titulo }}</h3>
                 <p class="book-author">por {{ book.autor }}</p>
@@ -111,7 +111,7 @@
         {% else %}
           {% for book in monographs %}
             <article class="book-card">
-              <img src="{{ book.capa is not empty ? book.capa : 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80' }}" alt="Capa de {{ book.titulo }}" class="book-cover">
+              <img src="{{ bookCover(book.capa) }}" alt="Capa de {{ book.titulo }}" class="book-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=500&q=80'">
               <div class="book-info">
                 <h3 class="book-title">{{ book.titulo }}</h3>
                 <p class="book-author">por {{ book.autor }}</p>

@@ -58,9 +58,10 @@ class HomeController extends Controller
                 'category' => $categoryName ?? 'Sem Categoria',
                 'year' => $book->anoPublicacao,
                 'description' => $book->sinopse ?? '',
-                'cover' => $book->capa ?? 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80',
+                'cover' => $this->normalizeCoverPath($book->capa),
             ];
         }, $livroRepo->listarAtivos());
+
 
         $this->view('public/livros', [
             'title' => 'INLIB - Livros',
@@ -69,6 +70,32 @@ class HomeController extends Controller
                 return ['id' => $category->id, 'name' => $category->nome];
             }, $categories),
         ]);
+    }
+
+    private function normalizeCoverPath(?string $coverPath): string
+    {
+        if (empty($coverPath)) {
+            return '/assets/images/preview.png';
+        }
+
+        if (preg_match('#^https?://#i', $coverPath) || strpos($coverPath, 'data:') === 0) {
+            return $coverPath;
+        }
+
+        if (strpos($coverPath, '/assets/') === 0) {
+            return $coverPath;
+        }
+
+        $normalizedPath = ltrim($coverPath, '/');
+        if (strpos($normalizedPath, 'public/') === 0) {
+            $normalizedPath = substr($normalizedPath, strlen('public/'));
+        }
+
+        if (strpos($normalizedPath, 'uploads/') === 0) {
+            return '/' . $normalizedPath;
+        }
+
+        return '/uploads/books/covers/' . ltrim($normalizedPath, '/');
     }
 
     public function categorias()
@@ -250,10 +277,33 @@ class HomeController extends Controller
             $category = $categoriaRepo->buscarPorId($book->categoriaId);
         }
 
+        $normalizedBook = clone $book;
+        if (!empty($normalizedBook->urlLivro)) {
+            $normalizedBook->urlLivro = $this->normalizeBookPdfPath($normalizedBook->urlLivro);
+        }
+
         $this->view('public/ver_livro', [
             'title' => 'INLIB - ' . $book->titulo,
-            'book' => $book,
+            'book' => $normalizedBook,
             'categoryName' => $category ? $category->nome : 'Categoria não informada',
         ]);
+    }
+
+    private function normalizeBookPdfPath(?string $path): string
+    {
+        if (empty($path)) {
+            return '';
+        }
+
+        if (preg_match('#^https?://#i', $path) || strpos($path, 'data:') === 0) {
+            return $path;
+        }
+
+        $filename = basename($path);
+        if ($filename === '' || $filename === '.') {
+            return '';
+        }
+
+        return '/uploads/books/pdf/' . $filename;
     }
 }

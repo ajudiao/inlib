@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     searchIcon.addEventListener('click', function() {
       const query = searchInput ? searchInput.value : '';
       if (query.trim()) {
-        window.location.href = `/views/public/pesquisa.html?q=${encodeURIComponent(query)}`;
+        window.location.href = `/pesquisa?q=${encodeURIComponent(query)}`;
       }
     });
   }
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e.key === 'Enter') {
         const query = searchInput.value;
         if (query.trim()) {
-          window.location.href = `/views/public/pesquisa.html?q=${encodeURIComponent(query)}`;
+          window.location.href = `/pesquisa?q=${encodeURIComponent(query)}`;
         }
       }
     });

@@ -3,38 +3,226 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
+use App\Model\Categoria;
 use App\Model\Livro;
+use App\Model\Usuario;
 use App\Repository\CategoriaRepository;
 use App\Repository\LivroRepository;
+use App\Repository\UsuarioRepository;
 
 class DashboardController extends Controller
 {
+    private function startSession(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
+    private function setFlash(string $type, string $message): void
+    {
+        $this->startSession();
+        $_SESSION['flash'] = [
+            'type' => $type,
+            'message' => $message,
+        ];
+    }
+
+    private function getFlash(): ?array
+    {
+        $this->startSession();
+        $flash = $_SESSION['flash'] ?? null;
+        unset($_SESSION['flash']);
+        return $flash;
+    }
+
     public function index()
     {
+        $livroRepo = new LivroRepository();
+        $categoriaRepo = new CategoriaRepository();
+        $usuarioRepo = new UsuarioRepository();
+
+        $livros = $livroRepo->listarTodos();
+        $categorias = $categoriaRepo->listarComContagem(100);
+        $usuarios = $usuarioRepo->listarTodos();
+
+        $livrosAtivos = $livroRepo->countAtivos();
+        $totalLivros = count($livros);
+        $livrosInativos = max(0, $totalLivros - $livrosAtivos);
+        $usuariosAtivos = count(array_filter($usuarios, static fn($usuario) => $usuario->ativo));
+
         $this->view('admin/dashboard', [
-            'title' => 'INLIB - Dashboard'
+            'title' => 'INLIB - Dashboard',
+            'totalLivros' => $totalLivros,
+            'livrosAtivos' => $livrosAtivos,
+            'livrosInativos' => $livrosInativos,
+            'totalCategorias' => count($categorias),
+            'usuariosAtivos' => $usuariosAtivos,
+            'categoriesSummary' => $categorias,
         ]);
     }
 
     public function livros()
     {
+        $livroRepo = new LivroRepository();
+        $categoriaRepo = new CategoriaRepository();
+
+        $categorias = $categoriaRepo->listarTodas();
+        $categoriesById = [];
+        foreach ($categorias as $categoria) {
+            $categoriesById[$categoria->id] = $categoria->nome;
+        }
+
+        $livros = array_map(function (Livro $livro) use ($categoriesById): Livro {
+            $livro->categoriaNome = $categoriesById[$livro->categoriaId] ?? null;
+            return $livro;
+        }, $livroRepo->listarTodos());
+
         $this->view('admin/livros', [
-            'title' => 'INLIB - Gestão de Livros'
+            'title' => 'INLIB - Gestão de Livros',
+            'livros' => $livros,
+            'flash' => $this->getFlash(),
         ]);
     }
 
     public function categorias()
     {
+        $categoriaRepo = new CategoriaRepository();
+
         $this->view('admin/categorias', [
-            'title' => 'INLIB - Categorias'
+            'title' => 'INLIB - Categorias',
+            'categories' => $categoriaRepo->listarComContagem(100),
+            'formError' => null,
+            'formSuccess' => null,
+            'formOld' => [],
+        ]);
+    }
+
+    public function salvarCategoria()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /admin/categorias');
+            exit;
+        }
+
+        $categoriaRepo = new CategoriaRepository();
+        $nome = trim($_POST['nome'] ?? '');
+        $descricao = trim($_POST['descricao'] ?? '');
+        $errors = [];
+
+        if ($nome === '') {
+            $errors[] = 'O nome da categoria é obrigatório.';
+        } elseif ($categoriaRepo->buscarPorNome($nome) !== null) {
+            $errors[] = 'Essa categoria já existe.';
+        }
+
+        if (!empty($errors)) {
+            $this->view('admin/categorias', [
+                'title' => 'INLIB - Categorias',
+                'categories' => $categoriaRepo->listarComContagem(100),
+                'formError' => implode(' ', $errors),
+                'formSuccess' => null,
+                'formOld' => [
+                    'nome' => $nome,
+                    'descricao' => $descricao,
+                ],
+            ]);
+            return;
+        }
+
+        $categoria = new Categoria(
+            null,
+            $nome,
+            $descricao !== '' ? $descricao : null,
+            date('Y-m-d H:i:s')
+        );
+
+        $categoriaRepo->criar($categoria);
+
+        $this->view('admin/categorias', [
+            'title' => 'INLIB - Categorias',
+            'categories' => $categoriaRepo->listarComContagem(100),
+            'formError' => null,
+            'formSuccess' => 'Categoria adicionada com sucesso.',
+            'formOld' => [],
         ]);
     }
 
     public function usuarios()
     {
+        $usuarioRepo = new UsuarioRepository();
+
         $this->view('admin/usuarios', [
-            'title' => 'INLIB - Usuários'
+            'title' => 'INLIB - Usuários',
+            'usuarios' => $usuarioRepo->listarTodos(),
+            'flash' => $this->getFlash(),
         ]);
+    }
+
+    public function adicionarUsuario()
+    {
+        $this->view('admin/adicionar-usuarios', [
+            'title' => 'INLIB - Adicionar Usuário',
+            'flash' => $this->getFlash(),
+        ]);
+    }
+
+    public function salvarUsuario()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /admin/usuarios');
+            exit;
+        }
+
+        $repo = new UsuarioRepository();
+        $nome = trim($_POST['nome'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $senhaInicial = trim($_POST['senha_inicial'] ?? '');
+        $perfil = trim($_POST['perfil'] ?? '');
+        $ativo = isset($_POST['ativo']) ? true : false;
+
+        $errors = [];
+        $allowedProfiles = ['admin', 'bibliotecario', 'professor', 'aluno'];
+
+        if ($nome === '') {
+            $errors[] = 'Nome é obrigatório.';
+        }
+
+        if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'E-mail inválido.';
+        } elseif ($repo->buscarPorEmail($email) !== null) {
+            $errors[] = 'Este e-mail já está em uso.';
+        }
+
+        if ($senhaInicial === '') {
+            $errors[] = 'A senha inicial é obrigatória.';
+        }
+
+        if (!in_array($perfil, $allowedProfiles, true)) {
+            $errors[] = 'Perfil inválido.';
+        }
+
+        if (!empty($errors)) {
+            $this->setFlash('error', implode(' ', $errors));
+            header('Location: /admin/usuarios');
+            exit;
+        }
+
+        $usuario = new Usuario(
+            null,
+            $nome,
+            $email,
+            password_hash($senhaInicial, PASSWORD_DEFAULT),
+            $perfil,
+            $ativo,
+            date('Y-m-d H:i:s'),
+            date('Y-m-d H:i:s')
+        );
+
+        $repo->criar($usuario);
+        $this->setFlash('success', 'Usuário adicionado com sucesso.');
+        header('Location: /admin/usuarios');
+        exit;
     }
 
     public function configuracoes()
@@ -103,7 +291,7 @@ class DashboardController extends Controller
 
         $capaPath = null;
         $pdfPath = null;
-        $uploadBasePath = BASE_PATH . '/storage/books';
+        $uploadBasePath = BASE_PATH . '/public/uploads/books/';
         $coverDir = $uploadBasePath . '/covers';
         $pdfDir = $uploadBasePath . '/pdf';
 
@@ -129,7 +317,7 @@ class DashboardController extends Controller
                     $coverFilename = 'cover_' . uniqid() . '.' . strtolower($coverExt);
                     $coverDestination = $coverDir . '/' . $coverFilename;
                     if (move_uploaded_file($coverFile['tmp_name'], $coverDestination)) {
-                        $capaPath = '/storage/books/covers/' . $coverFilename;
+                        $capaPath = '/uploads/books/covers/' . $coverFilename;
                     } else {
                         $errors[] = 'Não foi possível salvar a capa.';
                     }
@@ -151,7 +339,7 @@ class DashboardController extends Controller
                     $pdfFilename = 'book_' . uniqid() . '.' . strtolower($pdfExt);
                     $pdfDestination = $pdfDir . '/' . $pdfFilename;
                     if (move_uploaded_file($pdfFile['tmp_name'], $pdfDestination)) {
-                        $pdfPath = '/storage/books/pdf/' . $pdfFilename;
+                        $pdfPath = '/uploads/books/pdf/' . $pdfFilename;
                     } else {
                         $errors[] = 'Não foi possível salvar o PDF.';
                     }
@@ -189,13 +377,9 @@ class DashboardController extends Controller
         $categories = $categoriaRepo->listarTodas();
 
         if (!empty($errors)) {
-            $this->view('admin/adicionar-livro', [
-                'title' => 'INLIB - Adicionar Livro',
-                'categories' => $categories,
-                'formError' => implode(' ', $errors),
-                'formOld' => $data,
-            ]);
-            return;
+            $this->setFlash('error', implode(' ', $errors));
+            header('Location: /admin/livros');
+            exit;
         }
 
         $livroRepo = new LivroRepository();
@@ -219,11 +403,9 @@ class DashboardController extends Controller
 
         $livroRepo->criar($livro);
 
-        $this->view('admin/adicionar-livro', [
-            'title' => 'INLIB - Adicionar Livro',
-            'categories' => $categories,
-            'formSuccess' => 'Livro adicionado com sucesso.',
-        ]);
+        $this->setFlash('success', 'Livro adicionado com sucesso.');
+        header('Location: /admin/livros');
+        exit;
     }
 
     public function editarLivro(int $id)
