@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Repository\ConfiguracaoRepository;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Twig\TwigFunction;
@@ -33,6 +34,14 @@ class View
             self::$twig->addGlobal('app_name', APP_NAME);
             self::$twig->addGlobal('base_url', URL_DESENVOLVIMENTO);
             self::$twig->addGlobal('session', $_SESSION ?? []);
+
+            $configRepo = new ConfiguracaoRepository();
+            $config = $configRepo->buscarPrimeira();
+
+            self::$twig->addGlobal('config_nome', $config?->nome ?? 'INLIB - Instic Library');
+            self::$twig->addGlobal('config_email', $config?->email ?? 'contato@inlib.com');
+            self::$twig->addGlobal('config_contato', $config?->contato ?? '(11) 3000-0000');
+            self::$twig->addGlobal('config_endereco', $config?->endereco ?? 'Av. Paulista, 1000 - São Paulo, SP');
 
             /*
             |--------------------------------------------------------------------------

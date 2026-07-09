@@ -5,9 +5,15 @@
 // Mobile menu toggle
 function toggleMenu() {
   const nav = document.querySelector('nav');
-  if (nav) {
-    nav.classList.toggle('active');
+  const menuToggle = document.querySelector('.menu-toggle');
+
+  if (!nav || !menuToggle) {
+    return;
   }
+
+  const isOpen = nav.classList.toggle('active');
+  menuToggle.classList.toggle('open', isOpen);
+  menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 }
 
 // Close mobile menu when link is clicked

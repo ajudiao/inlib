@@ -115,17 +115,4 @@ class ConfiguracaoRepository extends AbstractRepository
             'endereco' => $endereco,
         ]);
     }
-
-    public function criar(Configuracao $config): int
-    {
-        $sql = "INSERT INTO configuracoes (nome, email, contato, endereco) VALUES (:nome, :email, :contato, :endereco)";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'nome' => $config->nome,
-            'email' => $config->email,
-            'contato' => $config->contato,
-            'endereco' => $config->endereco,
-        ]);
-        return (int) $this->pdo->lastInsertId();
-    }
 }

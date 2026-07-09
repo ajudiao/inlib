@@ -190,7 +190,7 @@
           <div class="info-icon"><i class="fas fa-envelope"></i></div>
           <div class="info-content">
             <h3>Email</h3>
-            <p><a href="mailto:contato@inlib.com" style="color: var(--primary-light);">contato@inlib.com</a></p>
+            <p><a href="mailto:{{ config_email }}" style="color: var(--primary-light);">{{ config_email }}</a></p>
             <p style="font-size: 0.9rem;">Respondemos em até 24 horas</p>
           </div>
         </div>
@@ -199,7 +199,7 @@
           <div class="info-icon"><i class="fas fa-phone"></i></div>
           <div class="info-content">
             <h3>Telefone</h3>
-            <p><a href="tel:1130000000" style="color: var(--primary-light);">(11) 3000-0000</a></p>
+            <p><a href="tel:{{ config_contato|replace({'(': '', ')': '', ' ': '', '-': ''}) }}" style="color: var(--primary-light);">{{ config_contato }}</a></p>
             <p style="font-size: 0.9rem;">Seg-Sex, 9h-18h (Horário de Brasília)</p>
           </div>
         </div>
@@ -208,7 +208,7 @@
           <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
           <div class="info-content">
             <h3>Endereço</h3>
-            <p>Av. Paulista, 1000 - Apt 2000<br>São Paulo, SP 01311-100<br>Brasil</p>
+            <p>{{ config_endereco|raw }}</p>
           </div>
         </div>
 
