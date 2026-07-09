@@ -30,6 +30,8 @@ Router::group([
     Router::get('/', 'DashboardController@index');
     Router::get('/livros', 'DashboardController@livros');
     Router::get('/categorias', 'DashboardController@categorias');
+    Router::get('/categorias/adicionar', 'DashboardController@adicionarCategoria');
+    Router::get('/categorias/adicionar-categoria', 'DashboardController@adicionarCategoria');
     Router::post('/categorias', 'DashboardController@salvarCategoria');
     Router::get('/categorias/editar/{id}', 'DashboardController@editarCategoria');
     Router::post('/categorias/editar/{id}', 'DashboardController@atualizarCategoria');
@@ -41,6 +43,7 @@ Router::group([
     Router::post('/usuarios/editar/{id}', 'DashboardController@atualizarUsuario');
     Router::post('/usuarios/apagar/{id}', 'DashboardController@apagarUsuario');
     Router::get('/configuracoes', 'DashboardController@configuracoes');
+    Router::post('/configuracoes', 'DashboardController@salvarConfiguracoes');
     Router::get('/livros/adicionar', 'DashboardController@adicionarLivro');
     Router::get('/livros/adicionar-livro', 'DashboardController@adicionarLivro');
     Router::post('/livros/adicionar-livro', 'DashboardController@salvarLivro');

@@ -10,6 +10,7 @@ use App\Model\Professor;
 use App\Model\Usuario;
 use App\Repository\AlunoRepository;
 use App\Repository\CategoriaRepository;
+use App\Repository\ConfiguracaoRepository;
 use App\Repository\LivroRepository;
 use App\Repository\ProfessorRepository;
 use App\Repository\UsuarioRepository;
@@ -136,6 +137,17 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function adicionarCategoria()
+    {
+        $this->view('admin/adicionar-categoria', [
+            'title' => 'INLIB - Adicionar Categoria',
+            'formError' => null,
+            'formSuccess' => null,
+            'formOld' => [],
+            'flash' => $this->getFlash(),
+        ]);
+    }
+
     public function salvarCategoria()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -155,7 +167,11 @@ class DashboardController extends Controller
         }
 
         if (!empty($errors)) {
-            $this->view('admin/categorias', [
+            $template = str_contains($_SERVER['REQUEST_URI'] ?? '', '/admin/categorias/adicionar')
+                ? 'admin/adicionar-categoria'
+                : 'admin/categorias';
+
+            $this->view($template, [
                 'title' => 'INLIB - Categorias',
                 'categories' => $categoriaRepo->listarComContagem(100),
                 'formError' => implode(' ', $errors),
@@ -164,6 +180,7 @@ class DashboardController extends Controller
                     'nome' => $nome,
                     'descricao' => $descricao,
                 ],
+                'flash' => $this->getFlash(),
             ]);
             return;
         }
@@ -177,13 +194,9 @@ class DashboardController extends Controller
 
         $categoriaRepo->criar($categoria);
 
-        $this->view('admin/categorias', [
-            'title' => 'INLIB - Categorias',
-            'categories' => $categoriaRepo->listarComContagem(100),
-            'formError' => null,
-            'formSuccess' => 'Categoria adicionada com sucesso.',
-            'formOld' => [],
-        ]);
+        $this->setFlash('success', 'Categoria adicionada com sucesso.');
+        header('Location: /admin/categorias');
+        exit;
     }
 
     public function usuarios()
@@ -281,9 +294,38 @@ class DashboardController extends Controller
 
     public function configuracoes()
     {
+        $repo = new ConfiguracaoRepository();
+
         $this->view('admin/configuracoes', [
-            'title' => 'INLIB - Configurações'
+            'title' => 'INLIB - Configurações',
+            'settings' => [
+                'nome' => $repo->valor('nome', 'INLIB - Instic Library'),
+                'email' => $repo->valor('email', 'contato@inlib.com'),
+                'contato' => $repo->valor('contato', '(11) 3000-0000'),
+                'endereco' => $repo->valor('endereco', 'Av. Paulista, 1000 - São Paulo, SP'),
+            ],
+            'flash' => $this->getFlash(),
         ]);
+    }
+
+    public function salvarConfiguracoes()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /admin/configuracoes');
+            exit;
+        }
+
+        $repo = new ConfiguracaoRepository();
+        $repo->salvar([
+            'nome' => trim($_POST['nome'] ?? ''),
+            'email' => trim($_POST['email'] ?? ''),
+            'contato' => trim($_POST['contato'] ?? ''),
+            'endereco' => trim($_POST['endereco'] ?? ''),
+        ]);
+
+        $this->setFlash('success', 'Configurações salvas com sucesso.');
+        header('Location: /admin/configuracoes');
+        exit;
     }
 
     public function adicionarLivro()

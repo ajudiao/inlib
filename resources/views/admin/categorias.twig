@@ -19,22 +19,8 @@
     <div class="alert {% if flash.type == 'success' %}alert-success{% else %}alert-error{% endif %}">{{ flash.message }}</div>
   {% endif %}
 
-  <div style="background: #fff; padding: 1.25rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1.5rem;">
-    <h2 style="margin-top: 0; margin-bottom: 0.5rem;">Adicionar categoria</h2>
-    <p style="margin-top: 0; color: #666;">O ID e a data de criação serão definidos automaticamente.</p>
-    <form method="post" action="{{ url('/admin/categorias') }}">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-        <div>
-          <label for="categoria-nome" style="display: block; margin-bottom: 0.35rem; font-weight: 600;">Nome</label>
-          <input id="categoria-nome" type="text" name="nome" value="{{ formOld.nome|default('') }}" required style="width: 100%; padding: 0.7rem; border: 1px solid #ccc; border-radius: 6px;">
-        </div>
-        <div>
-          <label for="categoria-descricao" style="display: block; margin-bottom: 0.35rem; font-weight: 600;">Descrição</label>
-          <textarea id="categoria-descricao" name="descricao" rows="4" style="width: 100%; padding: 0.7rem; border: 1px solid #ccc; border-radius: 6px;">{{ formOld.descricao|default('') }}</textarea>
-        </div>
-      </div>
-      <button type="submit" class="btn-admin btn-admin-primary">Salvar categoria</button>
-    </form>
+  <div class="admin-toolbar" style="justify-content: flex-end; margin-bottom: 1rem;">
+    <a href="{{ url('/admin/categorias/adicionar') }}" class="btn-admin btn-admin-primary">Nova categoria</a>
   </div>
 
   <div class="admin-toolbar">

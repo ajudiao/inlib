@@ -35,7 +35,7 @@ class LivroRepository extends AbstractRepository
 
     public function listarAtivos(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM livros WHERE ativo = 1");
+        $stmt = $this->pdo->query("SELECT * FROM livros WHERE ativo = 1 ORDER BY criado_em DESC");
         return array_map($this->hydrate(...), $stmt->fetchAll());
     }
 

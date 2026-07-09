@@ -7,9 +7,10 @@ class Configuracao
 {
     public function __construct(
         public ?int $id = null,
-        public string $chave = '',
-        public string $valor = '',
-        public ?string $descricao = null,
+        public ?string $nome = null,
+        public ?string $email = null,
+        public ?string $contato = null,
+        public ?string $endereco = null,
         public ?string $atualizadoEm = null,
     ) {
     }
@@ -18,9 +19,10 @@ class Configuracao
     {
         return new self(
             id: isset($d['id']) ? (int) $d['id'] : null,
-            chave: $d['chave'] ?? '',
-            valor: $d['valor'] ?? '',
-            descricao: $d['descricao'] ?? null,
+            nome: $d['nome'] ?? null,
+            email: $d['email'] ?? null,
+            contato: $d['contato'] ?? null,
+            endereco: $d['endereco'] ?? null,
             atualizadoEm: $d['atualizado_em'] ?? null,
         );
     }
@@ -28,10 +30,12 @@ class Configuracao
     public function toArray(): array
     {
         return [
-            'id'        => $this->id,
-            'chave'     => $this->chave,
-            'valor'     => $this->valor,
-            'descricao' => $this->descricao,
+            'id'            => $this->id,
+            'nome'          => $this->nome,
+            'email'         => $this->email,
+            'contato'       => $this->contato,
+            'endereco'      => $this->endereco,
+            'atualizado_em' => $this->atualizadoEm,
         ];
     }
 }
