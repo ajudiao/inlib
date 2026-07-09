@@ -51,9 +51,9 @@
                   <div style="width: 40px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: #f3e0b7; color: #7a6241; font-size: 1.2rem;"><i class="fas fa-book"></i></div>
                 {% endif %}
               </td>
-              <td><strong>{{ livro.titulo }}</strong></td>
-              <td>{{ livro.autor }}</td>
-              <td>{{ livro.categoriaNome ?: 'Sem categoria' }}</td>
+              <td><strong class="truncate">{{ livro.titulo }}</strong></td>
+              <td><span class="truncate">{{ livro.autor }}</span></td>
+              <td><span class="truncate">{{ livro.categoriaNome ?: 'Sem categoria' }}</span></td>
               <td>{{ livro.anoPublicacao ?: '-' }}</td>
               <td>{{ livro.quantidadeEstoque }}</td>
               <td>

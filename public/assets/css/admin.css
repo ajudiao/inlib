@@ -344,6 +344,22 @@
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.table-responsive th,
+.table-responsive td {
+  overflow: hidden;
+}
+
+.truncate,
+.table-responsive td .truncate {
+  display: inline-block;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
 
 thead {
@@ -366,6 +382,14 @@ td {
   border-bottom: 1px solid var(--gray-light);
   color: var(--text-secondary);
   font-size: 0.95rem;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+th {
+  min-width: 0;
 }
 
 tbody tr:hover {
