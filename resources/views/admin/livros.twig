@@ -6,15 +6,25 @@
   <div class="admin-header">
     <h1>Gestão de Livros</h1>
     <div class="admin-header-actions">
-      <a href="{{ url('/admin/livros/adicionar-livro') }}" class="btn-admin btn-admin-primary">➕ Novo Livro</a>
+      <a href="{{ url('/admin/livros/adicionar-livro') }}" class="btn-admin btn-admin-primary"><i class="fas fa-plus-circle"></i> Novo Livro</a>
     </div>
   </div>
 
   {% if flash %}
-    <div style="margin-bottom: 1rem; padding: 0.9rem 1rem; border-radius: 6px; {% if flash.type == 'success' %}background: #d4edda; color: #155724; border: 1px solid #c3e6cb;{% else %}background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;{% endif %}">
+    <div class="alert {% if flash.type == 'success' %}alert-success{% else %}alert-error{% endif %}">
       {{ flash.message }}
     </div>
   {% endif %}
+
+  <div class="admin-toolbar">
+    <form method="get" action="{{ url('/admin/livros') }}" class="search-form">
+      <input type="text" name="q" value="{{ searchTerm|default('') }}" placeholder="Pesquisar por título, autor, editora ou categoria">
+      <button type="submit" class="btn-admin btn-admin-primary">Pesquisar</button>
+      {% if searchTerm %}
+        <a href="{{ url('/admin/livros') }}" class="btn-admin btn-admin-secondary">Limpar</a>
+      {% endif %}
+    </form>
+  </div>
 
   <div class="table-container">
     <div class="table-responsive">
@@ -38,7 +48,7 @@
                 {% if livro.capa %}
                   <img src="{{ livro.capa }}" alt="{{ livro.titulo }}" style="width: 40px; height: 50px; object-fit: cover; border-radius: 4px;">
                 {% else %}
-                  <div style="width: 40px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: #e5eef8; color: #0056b3; font-size: 1.2rem;">📖</div>
+                  <div style="width: 40px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: #f3e0b7; color: #7a6241; font-size: 1.2rem;"><i class="fas fa-book"></i></div>
                 {% endif %}
               </td>
               <td><strong>{{ livro.titulo }}</strong></td>
@@ -57,6 +67,9 @@
                 <div class="table-actions">
                   <a href="{{ url('/ver_livro/' ~ livro.id) }}" class="table-action-btn action-view">Visualizar</a>
                   <a href="{{ url('/admin/livros/editar/' ~ livro.id) }}" class="table-action-btn action-edit">Editar</a>
+                  <form method="post" action="{{ url('/admin/livros/apagar/' ~ livro.id) }}" onsubmit="return confirm('Tem a certeza que deseja apagar este livro?');">
+                    <button type="submit" class="table-action-btn action-delete">Apagar</button>
+                  </form>
                 </div>
               </td>
             </tr>

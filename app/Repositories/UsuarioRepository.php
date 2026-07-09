@@ -29,6 +29,14 @@ class UsuarioRepository extends AbstractRepository
         return $row ? $this->hydrate($row) : null;
     }
 
+    public function buscarPorEmailExcluindoId(string $email, int $excludeId): ?Usuario
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE email = :email AND id != :id LIMIT 1");
+        $stmt->execute(['email' => $email, 'id' => $excludeId]);
+        $row = $stmt->fetch();
+        return $row ? $this->hydrate($row) : null;
+    }
+
     public function listarTodos(): array
     {
         return array_map($this->hydrate(...), $this->findAllRaw());

@@ -66,4 +66,10 @@ class AlunoRepository extends AbstractRepository
             'curso'     => $aluno->curso,
         ]);
     }
+
+    public function deletePorUsuarioId(int $usuarioId): bool
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM alunos WHERE usuario_id = :uid");
+        return $stmt->execute(['uid' => $usuarioId]);
+    }
 }

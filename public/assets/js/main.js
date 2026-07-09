@@ -52,6 +52,53 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+
+  function initHeroBackgroundRotation() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    const panels = hero.querySelectorAll('.hero-bg-panel');
+    if (panels.length !== 2) return;
+
+    const heroImages = [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80'
+    ];
+
+    let currentIndex = 0;
+    let activePanel = 0;
+
+    panels[0].style.backgroundImage = `url('${heroImages[0]}')`;
+    panels[0].classList.add('active');
+    panels[1].style.backgroundImage = `url('${heroImages[1]}')`;
+    panels[1].style.transform = 'translateX(100%)';
+
+    setInterval(() => {
+      const nextIndex = (currentIndex + 1) % heroImages.length;
+      const nextPanel = panels[1 - activePanel];
+      const currentPanel = panels[activePanel];
+
+      nextPanel.style.transition = 'none';
+      nextPanel.style.transform = 'translateX(100%)';
+      nextPanel.style.opacity = '1';
+      nextPanel.style.backgroundImage = `url('${heroImages[nextIndex]}')`;
+
+      void nextPanel.offsetWidth;
+
+      nextPanel.style.transition = '';
+      currentPanel.style.transform = 'translateX(-100%)';
+      currentPanel.style.opacity = '0';
+      nextPanel.style.transform = 'translateX(0)';
+      nextPanel.classList.add('active');
+      currentPanel.classList.remove('active');
+
+      activePanel = 1 - activePanel;
+      currentIndex = nextIndex;
+    }, 8000);
+  }
+
+  initHeroBackgroundRotation();
 });
 
 // Format date
@@ -81,7 +128,7 @@ function showNotification(message, type = 'info') {
     top: 20px;
     right: 20px;
     padding: 1rem 1.5rem;
-    background-color: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+    background-color: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#b58b33'};
     color: white;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

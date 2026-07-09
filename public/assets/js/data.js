@@ -4,15 +4,15 @@
 
 // Categories
 const categories = [
-  { id: 1, name: 'Engenharia de Software', count: 24, icon: '▢' },
-  { id: 2, name: 'Ciência da Computação', count: 18, icon: '◇' },
-  { id: 3, name: 'Matemática', count: 32, icon: '∑' },
-  { id: 4, name: 'Física', count: 15, icon: '⚛' },
-  { id: 5, name: 'Biologia', count: 28, icon: '❋' },
-  { id: 6, name: 'Química', count: 22, icon: '⚗' },
-  { id: 7, name: 'Administração', count: 16, icon: '⟡' },
-  { id: 8, name: 'Economia', count: 20, icon: '◈' },
-  { id: 9, name: 'Monografias', count: 42, icon: '⬚' }
+  { id: 1, name: 'Engenharia de Software', count: 24, icon: '<i class="fas fa-code"></i>' },
+  { id: 2, name: 'Ciência da Computação', count: 18, icon: '<i class="fas fa-microchip"></i>' },
+  { id: 3, name: 'Matemática', count: 32, icon: '<i class="fas fa-square-root-alt"></i>' },
+  { id: 4, name: 'Física', count: 15, icon: '<i class="fas fa-atom"></i>' },
+  { id: 5, name: 'Biologia', count: 28, icon: '<i class="fas fa-dna"></i>' },
+  { id: 6, name: 'Química', count: 22, icon: '<i class="fas fa-flask"></i>' },
+  { id: 7, name: 'Administração', count: 16, icon: '<i class="fas fa-briefcase"></i>' },
+  { id: 8, name: 'Economia', count: 20, icon: '<i class="fas fa-chart-line"></i>' },
+  { id: 9, name: 'Monografias', count: 42, icon: '<i class="fas fa-book-open"></i>' }
 ];
 
 // Books
@@ -225,7 +225,7 @@ const adminUser = {
   email: 'joao@inlib.com',
   role: 'Administrador',
   lastLogin: '2024-01-15 14:30',
-  avatar: '👨‍💼'
+  avatar: '<i class="fas fa-user-circle"></i>'
 };
 
 // Stats

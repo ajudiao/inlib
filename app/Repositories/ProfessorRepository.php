@@ -66,4 +66,10 @@ class ProfessorRepository extends AbstractRepository
             'departamento' => $professor->departamento,
         ]);
     }
+
+    public function deletePorUsuarioId(int $usuarioId): bool
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM professores WHERE usuario_id = :uid");
+        return $stmt->execute(['uid' => $usuarioId]);
+    }
 }

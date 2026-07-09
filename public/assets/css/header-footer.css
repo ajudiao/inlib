@@ -166,7 +166,7 @@ footer {
 }
 
 .footer-section a {
-  color: #b3d9ff;
+  color: #d6b66f;
   transition: var(--transition);
 }
 
@@ -199,14 +199,14 @@ footer {
 }
 
 .footer-newsletter button:hover {
-  background-color: var(--accent-blue);
+  background-color: var(--accent-gold);
 }
 
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 2rem;
   text-align: center;
-  color: #b3d9ff;
+  color: #d6b66f;
   max-width: 1200px;
   margin: 0 auto;
   padding-left: 1rem;

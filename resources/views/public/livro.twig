@@ -66,7 +66,7 @@
     .btn-add-favorite {
       width: 100%;
       padding: 1rem;
-      background-color: var(--accent-blue);
+      background-color: var(--accent-gold);
       color: var(--white);
       border: none;
       border-radius: var(--border-radius);
@@ -208,10 +208,10 @@
       <img id="book-cover" src="" alt="Capa do livro" class="book-cover-large">
       <div class="book-actions">
         <button class="btn-read-pdf" onclick="downloadPDF(getUrlParameter('id'))">
-          📖 Ler PDF
+          <i class="fas fa-book-open"></i> Ler PDF
         </button>
         <button class="btn-add-favorite" onclick="addToFavorite()">
-          ❤️ Adicionar aos Favoritos
+          <i class="fas fa-heart"></i> Adicionar aos Favoritos
         </button>
       </div>
     </aside>

@@ -4,18 +4,19 @@
    ================================ */
 
 :root {
-  --primary-dark: #001a4d;
-  --primary-light: #0066cc;
-  --accent-blue: #00a6ff;
+  --primary-dark: #4e3a1a;
+  --primary-light: #b58b33;
+  --accent-gold: #f2c94c;
   --white: #ffffff;
-  --gray-light: #f5f7fa;
-  --gray-medium: #d1d5db;
-  --gray-dark: #4b5563;
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
+  --gray-light: #fbf5e8;
+  --gray-medium: #d8c3a5;
+  --gray-dark: #7a6241;
+  --text-primary: #352a19;
+  --text-secondary: #6f5b3e;
+  --border-color: #e1d0aa;
   --border-radius: 8px;
-  --box-shadow: 0 2px 8px rgba(0, 26, 77, 0.1);
-  --box-shadow-hover: 0 8px 16px rgba(0, 26, 77, 0.15);
+  --box-shadow: 0 2px 8px rgba(111, 83, 36, 0.12);
+  --box-shadow-hover: 0 8px 16px rgba(111, 83, 36, 0.15);
   --transition: all 0.3s ease;
 }
 
@@ -75,7 +76,7 @@ a {
 }
 
 a:hover {
-  color: var(--accent-blue);
+  color: var(--accent-gold);
 }
 
 /* ================================
@@ -108,11 +109,11 @@ a:hover {
 .btn-secondary {
   background-color: var(--gray-light);
   color: var(--text-primary);
-  border: 2px solid var(--gray-medium);
+  border: 2px solid var(--border-color);
 }
 
 .btn-secondary:hover {
-  background-color: var(--gray-medium);
+  background-color: var(--primary-light);
   color: var(--white);
 }
 
@@ -237,7 +238,7 @@ a:hover {
 
 .card-badge {
   display: inline-block;
-  background-color: var(--accent-blue);
+  background-color: var(--accent-gold);
   color: var(--white);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
@@ -285,7 +286,7 @@ textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--primary-light);
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  box-shadow: 0 0 0 3px rgba(181, 139, 51, 0.1);
 }
 
 textarea {

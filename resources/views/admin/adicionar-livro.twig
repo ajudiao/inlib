@@ -8,97 +8,124 @@
       </div>
 
       <div class="form-container">
-        {% if formError is defined %}
-          <div class="alert alert-error">{{ formError }}</div>
-        {% endif %}
-        {% if formSuccess is defined %}
-          <div class="alert alert-success">{{ formSuccess }}</div>
-        {% endif %}
+        <div class="form-hero">
+          <div>
+            <p class="form-hero-eyebrow">Painel administrativo</p>
+            <h2>Cadastrar um novo título</h2>
+            <p>Preencha os dados principais do livro e publique o material na biblioteca com uma experiência mais organizada.</p>
+          </div>
+          <div class="form-hero-highlights">
+            <span>📚 Capa e PDF</span>
+            <span>🗂️ Categoria</span>
+            <span>✅ Status ativo</span>
+          </div>
+        </div>
 
-        <form id="book-form" action="{{ url('/admin/livros/adicionar-livro') }}" method="POST" enctype="multipart/form-data">
-          <div class="form-section">
-            <h3 class="form-section-title">Dados do Livro</h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label for="titulo">Título *</label>
-                <input type="text" id="titulo" name="titulo" value="{{ formOld.titulo|default('') }}" required>
+        <div class="form-card">
+          {% if formError is defined %}
+            <div class="alert alert-error">{{ formError }}</div>
+          {% endif %}
+          {% if formSuccess is defined %}
+            <div class="alert alert-success">{{ formSuccess }}</div>
+          {% endif %}
+
+          <form id="book-form" action="{{ url('/admin/livros/adicionar-livro') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-section">
+              <div class="form-section-header">
+                <h3 class="form-section-title">Dados do Livro</h3>
+                <p class="form-section-help">Informações principais que aparecerão na biblioteca.</p>
               </div>
-              <div class="form-group">
-                <label for="capa">Capa do Livro *</label>
-                <input type="file" id="capa" name="capa" accept="image/jpeg,image/png,image/webp" required>
-                <small>Imagem JPG/PNG/WebP até 5MB.</small>
-              </div>
-              <div class="form-group">
-                <label for="url_livro">Arquivo PDF do Livro *</label>
-                <input type="file" id="url_livro" name="url_livro" accept="application/pdf" required>
-                <small>PDF até 50MB.</small>
-              </div>
-              <div class="form-group">
-                <label for="autor">Autor *</label>
-                <input type="text" id="autor" name="autor" value="{{ formOld.autor|default('') }}" required>
-              </div>
-              <div class="form-group">
-                <label for="editora">Editora *</label>
-                <input type="text" id="editora" name="editora" value="{{ formOld.editora|default('') }}" required>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="titulo">Título *</label>
+                  <input type="text" id="titulo" name="titulo" value="{{ formOld.titulo|default('') }}" placeholder="Ex.: O Pequeno Príncipe" required>
+                </div>
+                <div class="form-group">
+                  <label for="capa">Capa do Livro *</label>
+                  <input type="file" id="capa" name="capa" accept="image/jpeg,image/png,image/webp" required>
+                  <small>Imagem JPG/PNG/WebP até 5MB.</small>
+                </div>
+                <div class="form-group">
+                  <label for="url_livro">Arquivo PDF do Livro *</label>
+                  <input type="file" id="url_livro" name="url_livro" accept="application/pdf" required>
+                  <small>PDF até 50MB.</small>
+                </div>
+                <div class="form-group">
+                  <label for="autor">Autor *</label>
+                  <input type="text" id="autor" name="autor" value="{{ formOld.autor|default('') }}" placeholder="Nome do autor" required>
+                </div>
+                <div class="form-group">
+                  <label for="editora">Editora *</label>
+                  <input type="text" id="editora" name="editora" value="{{ formOld.editora|default('') }}" placeholder="Nome da editora" required>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="form-section">
-            <h3 class="form-section-title">Identificação e Categoria</h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label for="isbn">ISBN</label>
-                <input type="text" id="isbn" name="isbn" value="{{ formOld.isbn|default('') }}" placeholder="978-...">
+            <div class="form-section">
+              <div class="form-section-header">
+                <h3 class="form-section-title">Identificação e Categoria</h3>
+                <p class="form-section-help">Organize o livro por categoria e identificação bibliográfica.</p>
               </div>
-              <div class="form-group">
-                <label for="categoria_id">Categoria *</label>
-                <select id="categoria_id" name="categoria_id" required>
-                  <option value="">Selecione uma categoria</option>
-                  {% for category in categories %}
-                    <option value="{{ category.id }}" {% if formOld.categoria_id is defined and formOld.categoria_id == category.id %}selected{% endif %}>{{ category.nome }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="ano_publicacao">Ano de Publicação *</label>
-                <input type="number" id="ano_publicacao" name="ano_publicacao" min="1400" max="2099" value="{{ formOld.ano_publicacao|default('') }}" required>
-              </div>
-              <div class="form-group">
-                <label for="edicao">Edição *</label>
-                <input type="text" id="edicao" name="edicao" value="{{ formOld.edicao|default('') }}" placeholder="1ª edição, 2ª edição" required>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="isbn">ISBN</label>
+                  <input type="text" id="isbn" name="isbn" value="{{ formOld.isbn|default('') }}" placeholder="978-...">
+                </div>
+                <div class="form-group">
+                  <label for="categoria_id">Categoria *</label>
+                  <select id="categoria_id" name="categoria_id" required>
+                    <option value="">Selecione uma categoria</option>
+                    {% for category in categories %}
+                      <option value="{{ category.id }}" {% if formOld.categoria_id is defined and formOld.categoria_id == category.id %}selected{% endif %}>{{ category.nome }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="ano_publicacao">Ano de Publicação *</label>
+                  <input type="number" id="ano_publicacao" name="ano_publicacao" min="1400" max="2099" value="{{ formOld.ano_publicacao|default('') }}" required>
+                </div>
+                <div class="form-group">
+                  <label for="edicao">Edição *</label>
+                  <input type="text" id="edicao" name="edicao" value="{{ formOld.edicao|default('') }}" placeholder="1ª edição, 2ª edição" required>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="form-section">
-            <h3 class="form-section-title">Estoque e Status</h3>
-            <div class="form-grid">
+            <div class="form-section">
+              <div class="form-section-header">
+                <h3 class="form-section-title">Estoque e Status</h3>
+                <p class="form-section-help">Defina disponibilidade e visibilidade do livro.</p>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="quantidade_estoque">Quantidade em Estoque *</label>
+                  <input type="number" id="quantidade_estoque" name="quantidade_estoque" min="0" value="{{ formOld.quantidade_estoque|default('0') }}" required>
+                </div>
+                <div class="form-group form-switch">
+                  <label for="ativo">Ativo</label>
+                  <input type="checkbox" id="ativo" name="ativo" {% if formOld.ativo is not defined or formOld.ativo %}checked{% endif %}>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-header">
+                <h3 class="form-section-title">Sinopse</h3>
+                <p class="form-section-help">Descreva o conteúdo de forma atrativa para os usuários.</p>
+              </div>
               <div class="form-group">
-                <label for="quantidade_estoque">Quantidade em Estoque *</label>
-                <input type="number" id="quantidade_estoque" name="quantidade_estoque" min="0" value="{{ formOld.quantidade_estoque|default('0') }}" required>
-              </div>
-              <div class="form-group form-switch">
-                <label for="ativo">Ativo</label>
-                <input type="checkbox" id="ativo" name="ativo" {% if formOld.ativo is not defined or formOld.ativo %}checked{% endif %}>
+                <label for="sinopse">Sinopse *</label>
+                <textarea id="sinopse" name="sinopse" rows="6" required>{{ formOld.sinopse|default('') }}</textarea>
               </div>
             </div>
-          </div>
 
-          <div class="form-section">
-            <h3 class="form-section-title">Sinopse</h3>
-            <div class="form-group">
-              <label for="sinopse">Sinopse *</label>
-              <textarea id="sinopse" name="sinopse" rows="6" required>{{ formOld.sinopse|default('') }}</textarea>
+            <div class="form-actions">
+              <button type="reset" class="btn-admin btn-admin-secondary">Limpar</button>
+              <a href="{{ url('/admin/livros') }}" class="btn-admin btn-admin-secondary">Cancelar</a>
+              <button type="submit" class="btn-admin btn-admin-primary">Adicionar Livro</button>
             </div>
-          </div>
-
-          <div class="form-actions">
-            <button type="reset" class="btn-admin btn-admin-secondary">Limpar</button>
-            <a href="{{ url('/admin/livros') }}" class="btn-admin btn-admin-secondary">Cancelar</a>
-            <button type="submit" class="btn-admin btn-admin-primary">Adicionar Livro</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
 
   <script src="../../assets/js/main.js"></script>

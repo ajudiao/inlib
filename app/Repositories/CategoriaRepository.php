@@ -28,6 +28,14 @@ class CategoriaRepository extends AbstractRepository
         return $row ? $this->hydrate($row) : null;
     }
 
+    public function buscarPorNomeExcluindoId(string $nome, int $excludeId): ?Categoria
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM categorias WHERE nome = :nome AND id != :id LIMIT 1");
+        $stmt->execute(['nome' => $nome, 'id' => $excludeId]);
+        $row = $stmt->fetch();
+        return $row ? $this->hydrate($row) : null;
+    }
+
     public function listarTodas(): array
     {
         return array_map($this->hydrate(...), $this->findAllRaw());

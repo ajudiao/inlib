@@ -118,7 +118,8 @@ class LivroRepository extends AbstractRepository
         $sql = "UPDATE livros SET
                     titulo = :titulo, autor = :autor, editora = :editora, isbn = :isbn,
                     categoria_id = :categoria_id, sinopse = :sinopse, ano_publicacao = :ano_publicacao,
-                    edicao = :edicao, capa = :capa, quantidade_estoque = :quantidade_estoque, ativo = :ativo
+                    edicao = :edicao, capa = :capa, url_livro = :url_livro,
+                    quantidade_estoque = :quantidade_estoque, ativo = :ativo, atualizado_em = :atualizado_em
                 WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
@@ -132,9 +133,18 @@ class LivroRepository extends AbstractRepository
             'ano_publicacao'     => $livro->anoPublicacao,
             'edicao'             => $livro->edicao,
             'capa'               => $livro->capa,
+            'url_livro'          => $livro->urlLivro,
             'quantidade_estoque' => $livro->quantidadeEstoque,
             'ativo'              => $livro->ativo ? 1 : 0,
+            'atualizado_em'      => $livro->atualizadoEm ?? date('Y-m-d H:i:s'),
         ]);
+    }
+
+    public function contarPorCategoria(int $categoriaId): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM livros WHERE categoria_id = :cid");
+        $stmt->execute(['cid' => $categoriaId]);
+        return (int) $stmt->fetchColumn();
     }
 
     /** Decrementa o estoque em 1 (uso ao registar um empréstimo). Retorna false se não houver estoque. */

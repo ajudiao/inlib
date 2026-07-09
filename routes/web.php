@@ -31,14 +31,22 @@ Router::group([
     Router::get('/livros', 'DashboardController@livros');
     Router::get('/categorias', 'DashboardController@categorias');
     Router::post('/categorias', 'DashboardController@salvarCategoria');
+    Router::get('/categorias/editar/{id}', 'DashboardController@editarCategoria');
+    Router::post('/categorias/editar/{id}', 'DashboardController@atualizarCategoria');
+    Router::post('/categorias/apagar/{id}', 'DashboardController@apagarCategoria');
     Router::get('/usuarios', 'DashboardController@usuarios');
     Router::get('/usuarios/adicionar-usuario', 'DashboardController@adicionarUsuario');
     Router::post('/usuarios/adicionar-usuario', 'DashboardController@salvarUsuario');
+    Router::get('/usuarios/editar/{id}', 'DashboardController@editarUsuario');
+    Router::post('/usuarios/editar/{id}', 'DashboardController@atualizarUsuario');
+    Router::post('/usuarios/apagar/{id}', 'DashboardController@apagarUsuario');
     Router::get('/configuracoes', 'DashboardController@configuracoes');
     Router::get('/livros/adicionar', 'DashboardController@adicionarLivro');
     Router::get('/livros/adicionar-livro', 'DashboardController@adicionarLivro');
     Router::post('/livros/adicionar-livro', 'DashboardController@salvarLivro');
     Router::get('/livros/editar/{id}', 'DashboardController@editarLivro');
+    Router::post('/livros/editar/{id}', 'DashboardController@atualizarLivro');
+    Router::post('/livros/apagar/{id}', 'DashboardController@apagarLivro');
 });
 
 Router::error(function (Request $request, \Throwable $exception) {
